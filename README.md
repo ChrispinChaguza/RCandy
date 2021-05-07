@@ -200,7 +200,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, 
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          color.pallette = "viridis")
+           color.pallette = "viridis")
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
@@ -214,7 +214,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, 
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          color.pallette = "viridis", gene.label.angle = 90)
+           color.pallette = "viridis", gene.label.angle = 90)
 ```
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
@@ -228,7 +228,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, 
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          color.pallette = "viridis", gene.label.angle = 90,
+           color.pallette = "viridis", gene.label.angle = 90,
           metadata.column.label.angle = 45)
 ```
 
@@ -294,7 +294,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"),
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          color.pallette = "inferno", gene.label.angle = 90)
+           color.pallette = "inferno", gene.label.angle = 90)
 ```
 
 <img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
@@ -329,7 +329,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"),
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, 
-          show.rec.plot.tracks = TRUE, color.pallette = "inferno", 
+          show.rec.plot.tracks = TRUE,  color.pallette = "inferno", 
           gene.label.angle = 90)
 ```
 
@@ -414,8 +414,8 @@ sessionInfo()
     Parkhill J, Harris SR. Rapid phylogenetic analysis of large samples
     of recombinant bacterial whole genome sequences using Gubbins.
     Nucleic Acids Res. 2015 Feb 18;43(3):e15. doi: 10.1093/nar/gku1196.
-    Epub 2014 Nov 20. PMID: 25414349; PMCID:
-    PMC4330336.<https://pubmed.ncbi.nlm.nih.gov/25414349/>.
+    Epub 2014 Nov 20. PMID: 25414349; PMCID: PMC4330336.
+    <https://pubmed.ncbi.nlm.nih.gov/25414349/>.
 
 -   Marttinen P, Hanage WP, Croucher NJ, Connor TR, Harris SR, Bentley
     SD, Corander J. Detection of recombination events in bacterial

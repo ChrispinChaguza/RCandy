@@ -172,7 +172,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, 
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          show.tip.label = TRUE, color.pallette = "viridis")
+           color.pallette = "viridis")
 ```
 
 
@@ -185,7 +185,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, 
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          show.tip.label = TRUE, color.pallette = "viridis", gene.label.angle = 90)
+           color.pallette = "viridis", gene.label.angle = 90)
 ```
 
 
@@ -198,7 +198,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, 
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          show.tip.label = TRUE, color.pallette = "viridis", gene.label.angle = 90,
+           color.pallette = "viridis", gene.label.angle = 90,
           metadata.column.label.angle = 45)
 ```
 
@@ -253,7 +253,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"),
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE,
-          show.tip.label = TRUE, color.pallette = "inferno", gene.label.angle = 90)
+           color.pallette = "inferno", gene.label.angle = 90)
 ```
 
 
@@ -287,7 +287,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
           taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"),
           taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff,
           color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, 
-          show.rec.plot.tracks = TRUE, show.tip.label = TRUE, color.pallette = "inferno", 
+          show.rec.plot.tracks = TRUE,  color.pallette = "inferno", 
           gene.label.angle = 90)
 ```
 
@@ -306,6 +306,6 @@ sessionInfo()
 
 ## References
 
-* Croucher NJ, Page AJ, Connor TR, Delaney AJ, Keane JA, Bentley SD, Parkhill J, Harris SR. Rapid phylogenetic analysis of large samples of recombinant bacterial whole genome sequences using Gubbins. Nucleic Acids Res. 2015 Feb 18;43(3):e15. doi: 10.1093/nar/gku1196. Epub 2014 Nov 20. PMID: 25414349; PMCID: PMC4330336.[https://pubmed.ncbi.nlm.nih.gov/25414349/](https://pubmed.ncbi.nlm.nih.gov/25414349/).  
+* Croucher NJ, Page AJ, Connor TR, Delaney AJ, Keane JA, Bentley SD, Parkhill J, Harris SR. Rapid phylogenetic analysis of large samples of recombinant bacterial whole genome sequences using Gubbins. Nucleic Acids Res. 2015 Feb 18;43(3):e15. doi: 10.1093/nar/gku1196. Epub 2014 Nov 20. PMID: 25414349; PMCID: PMC4330336. [https://pubmed.ncbi.nlm.nih.gov/25414349/](https://pubmed.ncbi.nlm.nih.gov/25414349/).  
 
 * Marttinen P, Hanage WP, Croucher NJ, Connor TR, Harris SR, Bentley SD, Corander J. Detection of recombination events in bacterial genomes from large population samples. Nucleic Acids Res. 2012 Jan;40(1):e6. doi: 10.1093/nar/gkr928. Epub 2011 Nov 7. PMID: 22064866; PMCID: PMC3245952. [https://pubmed.ncbi.nlm.nih.gov/22064866/](https://pubmed.ncbi.nlm.nih.gov/22064866/).
