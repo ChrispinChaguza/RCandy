@@ -41,7 +41,7 @@ In this example, we will load sample data for *Streptococcus pneumoniae*
 sequence type (ST) 320. This data was generated using genomes described
 in [*Gladstone RA et al. EBioMedicine. 2019 May;43:338-346. doi:
 10.1016/j.ebiom.2019.04.021. Epub 2019 Apr 16. PMID: 31003929; PMCID:
-PMC6557916*](\url%7Bhttps://pubmed.ncbi.nlm.nih.gov/31003929/%7D)
+PMC6557916*](https://pubmed.ncbi.nlm.nih.gov/31003929/)
 
 ``` r
 tree.file<-system.file("extdata", "ST320.final_tree.tre", package = "RCandy",mustWork = TRUE)
