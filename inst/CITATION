@@ -1,0 +1,24 @@
+citHeader("To cite RCandy in publications use:")
+
+citEntry(entry = "Unpublished",
+  title        = "{RCandy}: Rapid, simple and flexible interactive visualisation of homologous recombination events in bacterial genomes",
+  author       = personList(as.person("Chrispin Chaguza"),
+                   as.person("Gerry Tonkin-Hill"),
+                   as.person("Stephanie W. Lo"),
+                   as.person("James Hadfield"),
+                   as.person("Nicholas J. Croucher"),
+                   as.person("Stephen D. Bentley"),
+                   as.person("Simon R. Harris")),
+  journal      = "",
+  year         = "2021",
+  volume       = "",
+  number       = "",
+  pages        = "",
+  url          = "https://github.com/ChrispinChaguza/RCandy/",
+  note         = "https://github.com/ChrispinChaguza/RCandy/",
+
+  textVersion  =
+  paste("Chrispin Chaguza, Gerry Tonkin-Hill, Stephanie W. Lo, James Hadfield, Nicholas J. Croucher, Stephen D. Bentley, Simon R. Harris (2011).",
+        "RCandy: Rapid, simple and flexible interactive visualisation of homologous recombination events in bacterial genomes.",
+        "URL https://github.com/ChrispinChaguza/RCandy/.")
+)

@@ -1,0 +1,44 @@
+Package: RCandy
+Title: Rapid, Simple and Flexible Interactive Visualisation of
+    Microbial Phylogenetic Trees in Context of Metadata and Homologous
+    Recombination Events
+Version: 1.0.0
+Authors@R: 
+    person(given = "Chrispin",
+           family = "Chaguza",
+           role = c("aut", "cre"),
+           email = "Chrispin.Chaguza@gmail.com",
+           comment = c(ORCID = "0000-0002-2108-1757"))
+Description: Plots a phylogenetic tree in context of taxon
+    metadata and recombination events identified by Gubbins (Croucher et
+    al. 2015. <https://pubmed.ncbi.nlm.nih.gov/25414349/>) and BRATNextGen
+    (Marttinen et al. 2012.
+    <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245952/>).
+License: MIT + file LICENSE
+URL: https://github.com/ChrispinChaguza/RCandy/
+BugReports: https://github.com/ChrispinChaguza/RCandy/issues
+Depends: 
+    R (>= 2.10)
+Imports:
+    ape,
+    dplyr,
+    graphics,
+    grDevices,
+    magrittr,
+    phytools,
+    shape,
+    stats,
+    stringr,
+    tibble,
+    tidyr,
+    utils,
+    viridis
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
