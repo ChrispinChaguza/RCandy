@@ -250,8 +250,8 @@ The data objects used above can be loaded in the correct format using the code b
 ```{r}
 tree.file<-system.file("extdata", "ST320.final_tree.tre", package = "RCandy",mustWork = TRUE)
 metadata.file<-system.file("extdata", "ST320.tsv", package = "RCandy",mustWork = TRUE)
-gubbins.gff<-system.file("extdata", "ST320.recombination_predictions.gff.gz", package = "RCandy",mustWork = TRUE)
-ref.genome.gff<-system.file("extdata", "Hungary19A-6.gff.gz", package = "RCandy",mustWork = TRUE)
+gubbins.gff<-system.file("extdata", "ST320.recombination_predictions.gff", package = "RCandy",mustWork = TRUE)
+ref.genome.gff<-system.file("extdata", "Hungary19A-6.gff", package = "RCandy",mustWork = TRUE)
 ```
 
 
