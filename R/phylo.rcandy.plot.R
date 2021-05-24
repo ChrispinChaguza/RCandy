@@ -96,71 +96,65 @@
 #'
 ## Generate phylogenetic tree and/or recombination diagram
 
-RCandyVis<-function(tree.file.name,
-                             taxon.metadata.file=NULL,
-                             taxon.metadata.columns=NULL,
-                             gubbins.gff.file=NULL,
-                             recom.input.type="Gubbins",
-                             ref.genome.name=NULL,
-                             metadata.column.label.angle=90,
-                             show.gene.label=FALSE,
-                             gene.label.angle=45,
-                             show.metadata.columns=TRUE,
-                             subtree.tips=NULL,
-                             color.pallette="inferno",
-                             taxon.id.column=NULL,
-                             show.genome.ticks=TRUE,
-                             show.genome.axis=TRUE,
-                             rec.heatmap.color=c("red","blue"),
-                             tree.scale.length=NULL,
-                             show.rec.events=TRUE,
-                             show.metadata.label=TRUE,
-                             taxon.metadata.label.cex=0.85,
-                             taxon.metadata.delimeter="\t",
-                             ref.genome.length=NULL,
-                             show.rec.freq.per.base=FALSE,
-                             show.rec.freq.per.genome=TRUE,
-                             ladderize.tree.right=NULL,
-                             midpoint.root=FALSE,
-                             show.rec.plot.bg=TRUE,
-                             show.genome.annot=TRUE,
-                             show.rec.plot.tracks=FALSE,
-                             show.rec.plot.border=FALSE,
-                             ace.model.name="ARD",
-                             trait.for.ancestral.reconstr=NULL,
-                             save.to.this.file=NULL,
-                             plot.width=12,
-                             plot.height=9.5,
-                             show.tip.label=FALSE,
-                             align.tip.label=FALSE,
-                             show.fig.legend=TRUE,
-                             genome.start=NULL,
-                             genome.end=NULL,
-                             color.tree.tips.by.column=NULL,
-                             tree.tip.node.cex=0.35,
-                             tree.tip.label.cex=0.35,
-                             tree.node.cex=0.60){
+RCandyVis <- function(tree.file.name,
+                      taxon.metadata.file=NULL,
+                      taxon.metadata.columns=NULL,
+                      gubbins.gff.file=NULL,
+                      recom.input.type="Gubbins",
+                      ref.genome.name=NULL,
+                      metadata.column.label.angle=90,
+                      show.gene.label=FALSE,
+                      gene.label.angle=45,
+                      show.metadata.columns=TRUE,
+                      subtree.tips=NULL,
+                      color.pallette="inferno",
+                      taxon.id.column=NULL,
+                      show.genome.ticks=TRUE,
+                      show.genome.axis=TRUE,
+                      rec.heatmap.color=c("red","blue"),
+                      tree.scale.length=NULL,
+                      show.rec.events=TRUE,
+                      show.metadata.label=TRUE,
+                      taxon.metadata.label.cex=0.85,
+                      taxon.metadata.delimeter="\t",
+                      ref.genome.length=NULL,
+                      show.rec.freq.per.base=FALSE,
+                      show.rec.freq.per.genome=TRUE,
+                      ladderize.tree.right=NULL,
+                      midpoint.root=FALSE,
+                      show.rec.plot.bg=TRUE,
+                      show.genome.annot=TRUE,
+                      show.rec.plot.tracks=FALSE,
+                      show.rec.plot.border=FALSE,
+                      ace.model.name="ARD",
+                      trait.for.ancestral.reconstr=NULL,
+                      save.to.this.file=NULL,
+                      plot.width=12,
+                      plot.height=9.5,
+                      show.tip.label=FALSE,
+                      align.tip.label=FALSE,
+                      show.fig.legend=TRUE,
+                      genome.start=NULL,
+                      genome.end=NULL,
+                      color.tree.tips.by.column=NULL,
+                      tree.tip.node.cex=0.35,
+                      tree.tip.label.cex=0.35,
+                      tree.node.cex=0.60){
 
   # Check if the Boolean arguments are specified correctly
-  tryCatch(
-    {
-      isTRUE(show.gene.label)
-      isTRUE(show.metadata.columns)
-      isTRUE(show.genome.ticks)
-      isTRUE(show.genome.axis)
-      isTRUE(show.rec.events)
-      isTRUE(show.metadata.label)
-      isTRUE(show.rec.freq.per.base)
-      isTRUE(show.rec.plot.bg)
-      isTRUE(show.genome.annot)
-      isTRUE(show.rec.plot.tracks)
-      isTRUE(show.rec.plot.border)
-      isTRUE(trait.for.ancestral.reconstr)
-      isTRUE(show.tip.label)
-      isTRUE(align.tip.label)
-      isTRUE(show.fig.legend)
-    },error=function(e){return(e)}
-  )
+  if(!is.logical(show.gene.label)) stop("'show.gene.label' must be one of TRUE or FALSE")
+  if(!is.logical(show.metadata.columns)) stop("'show.metadata.columns' must be one of TRUE or FALSE")
+  if(!is.logical(show.genome.ticks)) stop("'show.genome.ticks' must be one of TRUE or FALSE")
+  if(!is.logical(show.genome.axis)) stop("'show.genome.axis' must be one of TRUE or FALSE")
+  if(!is.logical(show.rec.events)) stop("'show.rec.events' must be one of TRUE or FALSE")
+  if(!is.logical(show.metadata.label)) stop("'show.metadata.label' must be one of TRUE or FALSE")
+  if(!is.logical(show.rec.freq.per.base)) stop("'show.rec.freq.per.base' must be one of TRUE or FALSE")
+  if(!is.logical(show.rec.plot.bg)) stop("'show.rec.plot.bg' must be one of TRUE or FALSE")
+  if(!is.logical(show.genome.annot)) stop("'show.genome.annot' must be one of TRUE or FALSE")
+  if(!is.logical(show.rec.plot.border)) stop("'show.rec.plot.border' must be one of TRUE or FALSE")
+  if(!is.logical(show.tip.label)) stop("'show.tip.label' must be one of TRUE or FALSE")
+  if(!is.logical(align.tip.label)) stop("'align.tip.label' must be one of TRUE or FALSE")
+  if(!is.logical(show.fig.legend)) stop("'show.fig.legend' must be one of TRUE or FALSE")
 
   # Check if a valid reference genome name is provided
   if( is.character(ref.genome.name) ){
@@ -285,7 +279,7 @@ RCandyVis<-function(tree.file.name,
     if( is.null(ladderize.tree.right) ){
       # Do not ladderize the phylogenetic tree, leave it as specified
       tree.to.plot<-tree.file.name
-      }else{
+    }else{
       # Ladderize the phylogenetic tree to the right
       if( isTRUE(ladderize.tree.right) ){
         tree.to.plot<-ape::ladderize(tree.file.name,right=TRUE)
@@ -306,14 +300,14 @@ RCandyVis<-function(tree.file.name,
         if( isTRUE(midpoint.root) ){
           tree.to.plot<-ape::as.phylo(phytools::midpoint.root(tree.to.plot))
         }
-        tree.to.plot<-ladderize(tree.to.plot,right=TRUE)
+        tree.to.plot<-ape::ladderize(tree.to.plot,right=TRUE)
       }else{
         tree.to.plot<-read.tree.file(tree.file.name=tree.file.name)
         # Midpoint root the phylogenetic tree
         if( isTRUE(midpoint.root) ){
           tree.to.plot<-ape::as.phylo(phytools::midpoint.root(tree.to.plot))
         }
-        tree.to.plot<-ladderize(tree.to.plot,right=FALSE)
+        tree.to.plot<-ape::ladderize(tree.to.plot,right=FALSE)
       }
     }
   }
@@ -358,8 +352,8 @@ RCandyVis<-function(tree.file.name,
           # Check if all the specified metadata columns are available in the data frame
           if( length(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)))==0 ){
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                               taxon.metadata.columns=taxon.metadata.columns,
-                                               taxon.names=taxon.names,taxon.id.column=taxon.id.column,
+                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
             # Stop execution if some metadata columns are not available in the data frame
@@ -368,8 +362,8 @@ RCandyVis<-function(tree.file.name,
         }else{
           # Read the matadata file and extract the metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                             taxon.metadata.columns=taxon.metadata.columns,
-                                             taxon.names=taxon.names,taxon.id.column=taxon.id.column,
+                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
       }else{
@@ -381,8 +375,8 @@ RCandyVis<-function(tree.file.name,
           # Check if some specified metadata columns are not available in the metadata file
           if( length(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)))==0 ){
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                               taxon.metadata.columns=taxon.metadata.columns,
-                                               taxon.names=taxon.names,include.first.col=TRUE,
+                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.names=taxon.names,include.first.col=TRUE,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
             # Stop execution when some specified metadata columns are not available in the data frame
@@ -393,8 +387,8 @@ RCandyVis<-function(tree.file.name,
           taxon.metadata.columns<-unique(taxon.metadata.columns)
           # Read the metadata file and extract the specified metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                             taxon.metadata.columns=taxon.metadata.columns,
-                                             taxon.names=taxon.names,include.first.col=TRUE,
+                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.names=taxon.names,include.first.col=TRUE,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
       }
@@ -405,8 +399,8 @@ RCandyVis<-function(tree.file.name,
         if( length(base::setdiff(class(taxon.metadata.file),c("tbl_df","tbl","grouped_df","data.frame","rowwise_df")))==0 ){
           if(length(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)))==0){
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                               taxon.metadata.columns=taxon.metadata.columns,
-                                               taxon.names=taxon.names,taxon.id.column=taxon.id.column,
+                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
             # Stop execution when some specified metadata columns are not available in the data frame
@@ -415,8 +409,8 @@ RCandyVis<-function(tree.file.name,
         }else{
           # Read the metadata file and extract the specified metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                             taxon.metadata.columns=taxon.metadata.columns,
-                                             taxon.names=taxon.names,taxon.id.column=taxon.id.column,
+                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
       }else{
@@ -426,8 +420,8 @@ RCandyVis<-function(tree.file.name,
             # Include the taxon ID column (first column) among metadata columns to extract from the metadata file
             taxon.metadata.columns<-unique(c(taxon.metadata.columns))
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                               taxon.metadata.columns=taxon.metadata.columns,
-                                               taxon.names=taxon.names,include.first.col=TRUE,
+                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.names=taxon.names,include.first.col=TRUE,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
             # Stop execution when some specified metadata columns are not available in the data frame
@@ -436,8 +430,8 @@ RCandyVis<-function(tree.file.name,
         }else{
           # Read the metadata file and extract the specified metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                             taxon.metadata.columns=taxon.metadata.columns,
-                                             taxon.names=taxon.names,include.first.col=TRUE,
+                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.names=taxon.names,include.first.col=TRUE,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
       }
@@ -446,7 +440,7 @@ RCandyVis<-function(tree.file.name,
 
   # Check that the number of taxon/taxa in the metadata data frame is the same as in the phylogenetic tree
   if( !is.null(tmp.data.val) & !is.null(taxon.metadata.file) ){
-    if( length(base::setdiff(names(taxon.names),c(unname(unlist(tmp.data.val[,2])) )))!=0 ){
+    if( length(base::setdiff(names(taxon.names),c(unname(unlist(tmp.data.val[,2]))) ))!=0 ){
       stop("Some taxon names were not found in the metadata file or data frame")
     }
   }
@@ -799,7 +793,7 @@ RCandyVis<-function(tree.file.name,
           tibble::column_to_rownames(var="rank") %>% as.matrix()
         tree.tip.vals<-tree.tip.vals/rowSums(tree.tip.vals)
         ape::tiplabels(tip=1:dim(tree.tip.vals)[1],pie=tree.tip.vals,
-                  piecol=color.pallette(dim(tree.tip.vals)[2]),cex=tree.tip.node.cex)
+                       piecol=color.pallette(dim(tree.tip.vals)[2]),cex=tree.tip.node.cex)
       }else{
         stop("Attribte for colouring tree tips not found in the metadata")
       }
@@ -825,7 +819,7 @@ RCandyVis<-function(tree.file.name,
         strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
         strips.tmp$col<-strips.tmp.cols[ unname(unlist(strips.tmp$trait)) ]
         graphics::rect(loop.val-0.5,strips.tmp$pos-0.5,
-             loop.val+0.5,strips.tmp$pos+0.5,col=strips.tmp$col,lwd=0.001,border=strips.tmp$col)
+                       loop.val+0.5,strips.tmp$pos+0.5,col=strips.tmp$col,lwd=0.001,border=strips.tmp$col)
         loop.val<-loop.val+1
       }
     }else{
@@ -860,34 +854,34 @@ RCandyVis<-function(tree.file.name,
         # Show background colour for the recombination matrix diagram
         if( isTRUE(show.rec.plot.bg) & !is.null(ref.genome.name) ){
           graphics::rect(genome.start-0.5,0.45,
-               genome.end,length(taxon.names)+0.45,lty=6,col=rgb(0,0,0,alpha=0.035),lwd=0.0,border=rgb(0,0,0,alpha=0.035))
+                         genome.end,length(taxon.names)+0.45,lty=6,col=rgb(0,0,0,alpha=0.035),lwd=0.0,border=rgb(0,0,0,alpha=0.035))
         }
         # Adjust the line colours appropriately depending on whether the diagram is shown in R or saved to file
         if( is.null(save.to.this.file) ){
           for(count.val in 1:length(tree.rec.data$SEQ)){
             graphics::rect(tree.rec.data[count.val,]$START,taxon.names[ tree.rec.data[count.val,]$gene[[1]]]-0.50,
-                 tree.rec.data[count.val,]$END,taxon.names[ tree.rec.data[count.val,]$gene[[1]]]+0.50,
-                 border=rgb(1,1,1),lwd=0.001,
-                 col=ifelse(length(taxon.names[ tree.rec.data[count.val,]$gene[[1]] ])>1,rec.heatmap.color[1],rec.heatmap.color[2]))
+                           tree.rec.data[count.val,]$END,taxon.names[ tree.rec.data[count.val,]$gene[[1]]]+0.50,
+                           border=rgb(1,1,1),lwd=0.001,
+                           col=ifelse(length(taxon.names[ tree.rec.data[count.val,]$gene[[1]] ])>1,rec.heatmap.color[1],rec.heatmap.color[2]))
           }
         }else{
           for(count.val in 1:length(tree.rec.data$SEQ)){
             graphics::rect(tree.rec.data[count.val,]$START,taxon.names[ tree.rec.data[count.val,]$gene[[1]]]-0.50,
-                 tree.rec.data[count.val,]$END,taxon.names[ tree.rec.data[count.val,]$gene[[1]]]+0.50,
-                 border=rgb(1,1,1),lwd=0.001,
-                 col=ifelse(length(taxon.names[ tree.rec.data[count.val,]$gene[[1]] ])>1,rec.heatmap.color[1],rec.heatmap.color[2]))
+                           tree.rec.data[count.val,]$END,taxon.names[ tree.rec.data[count.val,]$gene[[1]]]+0.50,
+                           border=rgb(1,1,1),lwd=0.001,
+                           col=ifelse(length(taxon.names[ tree.rec.data[count.val,]$gene[[1]] ])>1,rec.heatmap.color[1],rec.heatmap.color[2]))
           }
         }
         # Check if genome tracks should be shown for each taxon/taxa
         if( isTRUE(show.rec.plot.tracks) ){
           graphics::rect(genome.start-0.5,(0:length(taxon.names))-0.05-0.5,
-               genome.end,(0:length(taxon.names))+0.05-0.5,
-               lwd=1,col=rgb(1,1,1),border=rgb(1,1,1))
+                         genome.end,(0:length(taxon.names))+0.05-0.5,
+                         lwd=1,col=rgb(1,1,1),border=rgb(1,1,1))
         }
         if( isTRUE(show.rec.plot.border) ){
           graphics::rect(genome.start-0.5,0.5,
-               genome.end,length(taxon.names)+0.5,
-               col=rgb(0,0,0,alpha=0.035),lwd=1.0,border=rgb(0,0,0,alpha=1.0))
+                         genome.end,length(taxon.names)+0.5,
+                         col=rgb(0,0,0,alpha=0.035),lwd=1.0,border=rgb(0,0,0,alpha=1.0))
         }
       }else{
         # Do not show recombination events in the diagram
