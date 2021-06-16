@@ -27,7 +27,7 @@ load.genome.GFF<-function(reference.genome){
   if( !is.null(reference.genome) & is.character(reference.genome) ){
   # Same coordinates for the genome region to show, default whole genome
   # Read the reference genome GFF annotation file
-  tmp.ref.df<-dplyr::as_tibble(read.table(reference.genome,comment.char="#",header=FALSE,sep="\t",fill=TRUE,row.names=NULL)) %>%
+  tmp.ref.df<-dplyr::as_tibble(read.table(reference.genome,comment.char="#",header=FALSE,sep="\t",fill=TRUE,row.names=NULL,stringsAsFactors = FALSE)) %>%
     dplyr::filter((!grepl("#",V1)) | V1!="seqname" )
   colnames(tmp.ref.df)<-c("seqname","source","feature","start","end","score","strand","frame","attributes")
   tmp.ref.df<-tmp.ref.df[!tmp.ref.df$source %in% c("source"),]
