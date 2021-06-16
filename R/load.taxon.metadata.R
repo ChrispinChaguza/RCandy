@@ -47,7 +47,7 @@ load.taxon.metadata<-function(taxon.metadata.file,
       # Check if the metadata file exists in the specified path
     if( file.exists(taxon.metadata.file) ){
       # Check if the user has specified the metadata column containing taxon IDs
-      tmp.taxon.data<-as_tibble(read.table(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter,comment.char="?"))
+      tmp.taxon.data<-as_tibble(read.table(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter,comment.char="?",stringsAsFactors=FALSE))
     }else{
       # Stop execution when no valid metadata file is found
       stop("The following metadata file '",taxon.metadata.file,"' was not found.")

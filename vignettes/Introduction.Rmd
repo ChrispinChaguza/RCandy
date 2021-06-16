@@ -2,7 +2,7 @@
 title: "Introduction to RCandy"
 author: "Chrispin Chaguza"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to RCandy}
@@ -13,7 +13,7 @@ chunk_output_type: console
 ---
 
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=7, fig.height=6,
+knitr::opts_chunk$set(fig.width=7, fig.height=6, 
                       echo=TRUE, warning=FALSE, message=FALSE,
                       tidy=TRUE, collapse = TRUE, comment = "#>")
 ```
@@ -260,7 +260,7 @@ Then we read the location of the phylogenetic tree file name stored in the varia
 
 ```{r}
 tree<-ape::read.tree(tree.file)
-metadata<-tidyr::as_tibble(read.table(metadata.file,header=T,sep="\t",comment.char="?"))
+metadata<-tidyr::as_tibble(read.table(metadata.file,header=T,sep="\t",comment.char="?", stringsAsFactors=FALSE))
 gubbins.GFF<-load.gubbins.GFF(gubbins.gff) 
 refgenome.GFF<-load.genome.GFF(ref.genome.gff)
 ```

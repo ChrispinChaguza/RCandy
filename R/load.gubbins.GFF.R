@@ -42,7 +42,7 @@ load.gubbins.GFF<-function(gubbins.gff.file,recom.input.type="Gubbins"){
         if( file.exists(gubbins.gff.file) ){
 
           # Read the GFF Gubbins recombination file, skips the first two lines which contain comments
-          tree.rec.data1<-dplyr::as_tibble(read.table(gubbins.gff.file,header=FALSE,sep="\t",comment.char="?",skip=2,fill=T,row.names=NULL))
+          tree.rec.data1<-dplyr::as_tibble(read.table(gubbins.gff.file,header=FALSE,sep="\t",comment.char="?",skip=2,fill=TRUE,row.names=NULL,stringsAsFactors = FALSE))
           colnames(tree.rec.data1)<-c("SEQ","PROG","TYPE","START","END","XX","YY","ZZ","REC")
 
           # Check if at least one recombination event was found in the Gubbins GFF file
@@ -77,7 +77,7 @@ load.gubbins.GFF<-function(gubbins.gff.file,recom.input.type="Gubbins"){
     }
   }else{
     tree.rec.data.tmp<-as_tibble(read.table(gubbins.gff.file,
-                         fill=TRUE,sep="\t",comment.char="?",skip=2,header=FALSE)) %>%
+                         fill=TRUE,sep="\t",comment.char="?",skip=2,header=FALSE,stringsAsFactors = FALSE)) %>%
       dplyr::mutate(V2=.data$V1) %>% dplyr::group_by(.data$V1) %>% tidyr::nest() %>%
       dplyr::ungroup() %>% dplyr::select(-.data$V1) %>% dplyr::rowwise() %>%
       dplyr::mutate(rec.events=list(stringr::str_split(.data$data[[1]]," ")[[1]][!stringr::str_split(.data$data[[1]]," ")[[1]] %in% c("")])) %>%

@@ -272,7 +272,7 @@ Then we read the location of the phylogenetic tree file name stored in the varia
 
 ```{r}
 tree<-ape::read.tree(tree.file)
-metadata<-tidyr::as_tibble(read.table(metadata.file,header=T,sep="\t",comment.char="?"))
+metadata<-tidyr::as_tibble(read.table(metadata.file,header=TRUE,sep="\t",comment.char="?",stringsAsFactors = FALSE))
 gubbins.GFF<-load.gubbins.GFF(gubbins.gff) 
 refgenome.GFF<-load.genome.GFF(ref.genome.gff)
 ```

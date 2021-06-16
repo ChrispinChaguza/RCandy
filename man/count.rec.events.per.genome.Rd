@@ -4,11 +4,7 @@
 \alias{count.rec.events.per.genome}
 \title{Count number of overlapping recombination events at each genomic position}
 \usage{
-count.rec.events.per.genome(
-  gubbins.gff.file,
-  recom.input.type = "Gubbins",
-  taxon.names
-)
+\method{count}{rec.events.per.genome}(gubbins.gff.file, recom.input.type = "Gubbins", taxon.names)
 }
 \arguments{
 \item{gubbins.gff.file}{Path to the input Gubbins GFF recombination file or data frame}
