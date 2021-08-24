@@ -30,7 +30,7 @@ RCandyVis(
   ref.genome.length = NULL,
   show.rec.freq.per.base = FALSE,
   show.rec.freq.per.genome = FALSE,
-  rec.events.per.base.as.barplot = FALSE,
+  rec.events.per.base.as.heatmap = TRUE,
   ladderize.tree.right = NULL,
   midpoint.root = FALSE,
   show.rec.plot.bg = TRUE,
@@ -102,7 +102,7 @@ RCandyVis(
 
 \item{show.rec.freq.per.genome}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon.}
 
-\item{rec.events.per.base.as.barplot}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).}
+\item{rec.events.per.base.as.heatmap}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).}
 
 \item{ladderize.tree.right}{A Boolean indicating whether to ladderize the phylogenetic tree to the right.}
 
