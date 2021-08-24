@@ -76,7 +76,7 @@ count.rec.events.per.base<-function(gubbins.gff.file,recom.input.type="Gubbins")
   temp.vals.fr<-data.frame(XX=temp.vals$XX) %>% dplyr::as_tibble() %>%
     dplyr::group_by(.data$XX) %>% dplyr::add_count(name="FRQ") %>%
     dplyr::mutate(POS=.data$XX,GRP=1) %>% dplyr::ungroup() %>%
-    dplyr::select(-.data$XX) %>% dplyr::arrange(.data$POS)
+    dplyr::select(-.data$XX) %>% dplyr::arrange(.data$POS) %>% distinct()
 
   # Return a data frame containing genomic position and number of recombination events identified
   return(temp.vals.fr)

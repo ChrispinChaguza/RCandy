@@ -39,6 +39,7 @@ load.genome.GFF<-function(reference.genome){
     dplyr::mutate(start=as.integer(.data$start),end=as.integer(.data$end)) %>% dplyr::filter(.data$feature %in% c("source","locus_tag","gene","CDS"))
 
   # Filter out lines not containing information about the genetic features
+  colnames(reference.genome.obj1)<-c("seqname","source","feature","start","end","score","strand","frame","attributes")
   reference.genome.obj<-reference.genome.obj1 %>%
     dplyr::group_by(.data$seqname,.data$source,.data$feature,.data$start,.data$end,.data$score,.data$strand,.data$frame) %>%
     dplyr::filter(!.data$feature %in% c("ORIGIN","NA","","##")) %>%
@@ -48,6 +49,7 @@ load.genome.GFF<-function(reference.genome){
   }else{
     if( length(setdiff(class(reference.genome),c("tbl_df","tbl","data.frame","rowwise_df","grouped_df")))==0 ){
       reference.genome.obj<-reference.genome
+      colnames(reference.genome.obj)<-c("seqname","source","feature","start","end","score","strand","frame","attributes")
     }else{
       # Exit the program when valid genome length is found
       stop("Could not find a feature labelled 'source' in the genome annotation file")

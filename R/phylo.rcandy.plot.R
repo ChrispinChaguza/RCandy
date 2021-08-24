@@ -28,6 +28,7 @@
 #' @param ref.genome.length An optional reference genome length, otherwise it's read from the reference genome GFF file or data frame.
 #' @param show.rec.freq.per.base A Boolean indicating whether to show the frequency of recombination per genomic position/base.
 #' @param show.rec.freq.per.genome A Boolean indicating whether to show the frequency of recombination events per genome/taxon.
+#' @param rec.events.per.base.as.barplot A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).
 #' @param ladderize.tree.right A Boolean indicating whether to ladderize the phylogenetic tree to the right.
 #' @param midpoint.root A Boolean indicating whether to root the phylogenetic tree at midpoint.
 #' @param show.rec.plot.bg A Boolean indicating whether to show background for the recombination events diagram/heatmap.
@@ -67,16 +68,16 @@
 #'
 #' RCandyVis(tree.file.name = tree.file, taxon.metadata.file = metadata.file,
 #' taxon.metadata.columns = c("Source","Country"),ref.genome.name = ref.genome.gff,
-#' save.to.this.file = "../rr.pdf",gubbins.gff.file = gubbins.gff,
-#' color.tree.tips.by.column = "Country",show.rec.freq.per.base = FALSE,
-#' show.gene.label = FALSE,ladderize.tree.right = TRUE,midpoint.root = TRUE)
+#' gubbins.gff.file = gubbins.gff,color.tree.tips.by.column = "Country",
+#' show.rec.freq.per.base = FALSE,show.gene.label = FALSE,ladderize.tree.right = TRUE,
+#' midpoint.root = TRUE)
 #'
 #' RCandyVis(tree.file.name = tree.file, taxon.metadata.file = metadata.file,
 #' taxon.metadata.columns = c("Source","Country"),ref.genome.name = ref.genome.gff,
-#' save.to.this.file = "../rr.pdf",gubbins.gff.file = gubbins.gff,
-#' color.tree.tips.by.column = "Country",show.rec.freq.per.base = FALSE,
-#' show.gene.label = FALSE,ladderize.tree.right = TRUE,midpoint.root = TRUE,
-#' genome.start = 30000, genome.end = 60000,show.gene.label=TRUE)
+#' gubbins.gff.file = gubbins.gff,color.tree.tips.by.column = "Country",
+#' show.rec.freq.per.base = FALSE,show.gene.label = FALSE,ladderize.tree.right = TRUE,
+#' midpoint.root = TRUE,genome.start = 30000, genome.end = 60000,show.gene.label=TRUE,
+#' save.to.this.file = "RCandy.output.pdf",)
 #' }
 #'
 #' @export
@@ -119,7 +120,8 @@ RCandyVis <- function(tree.file.name,
                       taxon.metadata.delimeter="\t",
                       ref.genome.length=NULL,
                       show.rec.freq.per.base=FALSE,
-                      show.rec.freq.per.genome=TRUE,
+                      show.rec.freq.per.genome=FALSE,
+                      rec.events.per.base.as.barplot=FALSE,
                       ladderize.tree.right=NULL,
                       midpoint.root=FALSE,
                       show.rec.plot.bg=TRUE,
@@ -149,6 +151,8 @@ RCandyVis <- function(tree.file.name,
   if(!is.logical(show.rec.events)) stop("'show.rec.events' must be one of TRUE or FALSE")
   if(!is.logical(show.metadata.label)) stop("'show.metadata.label' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.freq.per.base)) stop("'show.rec.freq.per.base' must be one of TRUE or FALSE")
+  if(!is.logical(show.rec.freq.per.genome)) stop("'show.rec.freq.per.genome' must be one of TRUE or FALSE")
+  if(!is.logical(rec.events.per.base.as.barplot)) stop("'rec.events.per.base.as.barplot' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.plot.bg)) stop("'show.rec.plot.bg' must be one of TRUE or FALSE")
   if(!is.logical(show.genome.annot)) stop("'show.genome.annot' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.plot.border)) stop("'show.rec.plot.border' must be one of TRUE or FALSE")
@@ -238,6 +242,11 @@ RCandyVis <- function(tree.file.name,
     show.genome.axis<-1.0
   }else{
     show.genome.axis<-0
+  }
+
+  # Check the options for plotting the recombination frequency plot
+  if(!isTRUE(show.rec.freq.per.base) & isTRUE(rec.events.per.base.as.barplot)){
+    warning("'show.rec.freq.per.base' is FALSE...ignoring 'rec.events.per.base.as.barplot'")
   }
 
   # Specify the viridis colour pallete to use
@@ -1022,17 +1031,39 @@ RCandyVis <- function(tree.file.name,
     if( isTRUE(show.rec.freq.per.base) & isTRUE(show.rec.events) ){
       # Show the recombination frequency plot
       par(mai=c(0,0,0,0))
-      temp.vals.fr<-count.rec.events.per.base(gubbins.gff.file=gubbins.gff.file,recom.input.type=recom.input.type)
-      plot(0,0,las=1,xlim=c(genome.start,genome.end),ylim=c(0,max(temp.vals.fr$FRQ) ),
-           bty="n",xaxt="n",yaxt="n",xaxs="i",yaxs="i",col=rgb(0,0,0,alpha=0),
-           xlab="Chromosome position (bp)",ylab=expression("N"[rec]),xaxt="n")
-      axis(1,at=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
-           labels=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),las=1)
-      axis(2,at=seq(0,max(temp.vals.fr$FRQ),floor((max(temp.vals.fr$FRQ)+1)/4)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
-           labels=seq(0,max(temp.vals.fr$FRQ),floor((max(temp.vals.fr$FRQ)+1)/4)),las=1)
-      polygon(c(min(temp.vals.fr$POS),temp.vals.fr$POS,max(temp.vals.fr$POS)),
-              c(min(temp.vals.fr$FRQ),temp.vals.fr$FRQ,min(temp.vals.fr$FRQ)),
-              col=rgb(0,0,0,alpha=0.3),border=FALSE,lwd=4)
+      if(isTRUE(rec.events.per.base.as.barplot)){
+        temp.vals.fr<-count.rec.events.per.base(gubbins.gff.file=gubbins.gff.file,recom.input.type=recom.input.type)
+        ##temp.vals.fr$FRQ<-ifelse(temp.vals.fr$FRQ==0,0,log(temp.vals.fr$FRQ))
+        plot(0,0,las=1,xlim=c(genome.start,genome.end),ylim=c(0,max(temp.vals.fr$FRQ)+1 ),
+             bty="n",xaxt="n",yaxt="n",xaxs="i",yaxs="i",col=rgb(0,0,0,alpha=0),
+             xlab="Chromosome position (bp)",ylab=expression("N"[rec]),xaxt="n")
+        axis(1,at=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
+             labels=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),las=1)
+        axis(2,at=seq(0,max(temp.vals.fr$FRQ),floor((max(temp.vals.fr$FRQ)+1)/4)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
+             labels=seq(0,max(temp.vals.fr$FRQ),floor((max(temp.vals.fr$FRQ)+1)/4)),las=1)
+        polygon(c(min(temp.vals.fr$POS),temp.vals.fr$POS,max(temp.vals.fr$POS)),
+                c(min(temp.vals.fr$FRQ),temp.vals.fr$FRQ,min(temp.vals.fr$FRQ)),
+                col=rgb(0,0,0,alpha=1),border=FALSE,lwd=20)
+      }else{
+        temp.vals.fr<-count.rec.events.per.base(gubbins.gff.file=gubbins.gff.file,recom.input.type=recom.input.type)
+        plot(0,0,las=1,xlim=c(genome.start,genome.end),ylim=c(0,1.5 ),
+             bty="n",xaxt="n",yaxt="n",xaxs="i",yaxs="i",col=rgb(0,0,0,alpha=0),
+             xlab="Chromosome position (bp)",ylab=expression("N"[rec]),xaxt="n")
+
+        temp.vals.fr<-temp.vals.fr %>% dplyr::arrange(POS) %>% dplyr::mutate(N=lead(POS)) %>%
+          dplyr::mutate(N=ifelse(is.na(N),POS+1,N)) %>% dplyr::mutate(RR=N-POS) %>% ungroup() %>%
+          dplyr::mutate(Q=data.table::rleid(RR)) %>% dplyr::mutate(XX=paste0(Q,".",FRQ)) %>%
+          dplyr::mutate(Q1=data.table::rleid(XX)) %>% dplyr::mutate(XX1=paste0(Q1,".",XX)) %>%
+          dplyr::group_by(XX1) %>%
+          dplyr::mutate(start=dplyr::first(POS),end=dplyr::last(POS)) %>%
+          dplyr::select(FRQ,XX1,start,end) %>% dplyr::distinct() %>% dplyr::ungroup() %>%
+          dplyr::arrange(end) %>% dplyr::select(FRQ,start,end)
+
+        rect(temp.vals.fr$start,0.5,
+             temp.vals.fr$end,1.5,
+             col = grDevices::colorRampPalette(c("white","red"))( ceiling(log(max(temp.vals.fr$FRQ),2)) )[temp.vals.fr$FRQ],
+             border = NA, lwd = 1 )
+      }
     }else{
       {
         # Hide the recombination frequency plot
@@ -1060,7 +1091,7 @@ RCandyVis <- function(tree.file.name,
         strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
         if(show.fig.legend){
           legend(0,loop.val*(10/length(taxon.metadata.columns)),fill=unname(strips.tmp.cols),legend=names(strips.tmp.cols),
-                 cex=0.85,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
+                 cex=0.55,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
         }
         loop.val<-loop.val+1
       }

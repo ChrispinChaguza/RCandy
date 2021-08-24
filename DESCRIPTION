@@ -1,7 +1,6 @@
 Package: RCandy
-Title: Rapid, Simple and Flexible Interactive Visualisation of
-    Microbial Phylogenetic Trees in Context of Metadata and Homologous
-    Recombination Events
+Title: RCandy:  an R package for rapid visualisation of homologous recombination 
+       events in bacterial genomes
 Version: 1.0.0
 Authors@R: 
     person(given = "Chrispin",

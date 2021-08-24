@@ -3,7 +3,7 @@
 # RCandy
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/ChrispinChaguza/RCandy/workflows/R-CMD-check/badge.svg)](https://github.com/ChrispinChaguza/RCandy/actions) <!-- badges: end -->
+[![R-CMD-check](https://github.com/ChrispinChaguza/RCandy/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ChrispinChaguza/RCandy/actions/workflows/R-CMD-check.yaml)<!-- badges: end -->
 
 RCandy plots a phylogenetic tree in context of strain metadata and recombination events identified by Gubbins [(Croucher et al. 2015, Nucleic Acids Research. PMID: 25414349)](https://pubmed.ncbi.nlm.nih.gov/25414349/) and BRATNextGen [(Marttinen et al. 2012, Nucleic Acids Res. PMID: 22064866)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245952/).
 
@@ -303,7 +303,7 @@ sessionInfo()
 #>  [4] tidyselect_1.1.0        xfun_0.19               purrr_0.3.4            
 #>  [7] lattice_0.20-41         phytools_0.7-70         colorspace_2.0-0       
 #> [10] vctrs_0.3.6             generics_0.1.0          expm_0.999-6           
-#> [13] htmltools_0.5.0         viridisLite_0.3.0       yaml_2.2.1             
+#> [13] htmltools_0.5.1.1       viridisLite_0.3.0       yaml_2.2.1             
 #> [16] rlang_0.4.10            pillar_1.4.7            glue_1.4.2             
 #> [19] lifecycle_1.0.0         stringr_1.4.0           munsell_0.5.0          
 #> [22] combinat_0.0-8          gtable_0.3.0            coda_0.19-4            

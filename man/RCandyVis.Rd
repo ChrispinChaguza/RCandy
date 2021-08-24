@@ -29,7 +29,8 @@ RCandyVis(
   taxon.metadata.delimeter = "\\t",
   ref.genome.length = NULL,
   show.rec.freq.per.base = FALSE,
-  show.rec.freq.per.genome = TRUE,
+  show.rec.freq.per.genome = FALSE,
+  rec.events.per.base.as.barplot = FALSE,
   ladderize.tree.right = NULL,
   midpoint.root = FALSE,
   show.rec.plot.bg = TRUE,
@@ -101,6 +102,8 @@ RCandyVis(
 
 \item{show.rec.freq.per.genome}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon.}
 
+\item{rec.events.per.base.as.barplot}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).}
+
 \item{ladderize.tree.right}{A Boolean indicating whether to ladderize the phylogenetic tree to the right.}
 
 \item{midpoint.root}{A Boolean indicating whether to root the phylogenetic tree at midpoint.}
@@ -164,16 +167,16 @@ mustWork = TRUE)
 
 RCandyVis(tree.file.name = tree.file, taxon.metadata.file = metadata.file,
 taxon.metadata.columns = c("Source","Country"),ref.genome.name = ref.genome.gff,
-save.to.this.file = "../rr.pdf",gubbins.gff.file = gubbins.gff,
-color.tree.tips.by.column = "Country",show.rec.freq.per.base = FALSE,
-show.gene.label = FALSE,ladderize.tree.right = TRUE,midpoint.root = TRUE)
+gubbins.gff.file = gubbins.gff,color.tree.tips.by.column = "Country",
+show.rec.freq.per.base = FALSE,show.gene.label = FALSE,ladderize.tree.right = TRUE,
+midpoint.root = TRUE)
 
 RCandyVis(tree.file.name = tree.file, taxon.metadata.file = metadata.file,
 taxon.metadata.columns = c("Source","Country"),ref.genome.name = ref.genome.gff,
-save.to.this.file = "../rr.pdf",gubbins.gff.file = gubbins.gff,
-color.tree.tips.by.column = "Country",show.rec.freq.per.base = FALSE,
-show.gene.label = FALSE,ladderize.tree.right = TRUE,midpoint.root = TRUE,
-genome.start = 30000, genome.end = 60000,show.gene.label=TRUE)
+gubbins.gff.file = gubbins.gff,color.tree.tips.by.column = "Country",
+show.rec.freq.per.base = FALSE,show.gene.label = FALSE,ladderize.tree.right = TRUE,
+midpoint.root = TRUE,genome.start = 30000, genome.end = 60000,show.gene.label=TRUE,
+save.to.this.file = "RCandy.output.pdf",)
 }
 
 }

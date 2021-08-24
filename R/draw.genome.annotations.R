@@ -92,16 +92,16 @@ show.genome.annotation.plot<-function(genome.name,
   # Plot the gene features on different lines for the forward and reverse strand
   # Genes randomly assigned different colours for clarity
   Arrows(x0=ifelse(reference.genome.obj$strand=="+",reference.genome.obj$start,reference.genome.obj$end),
-         y0=ifelse(reference.genome.obj$strand=="+",2.75+0.40,1.75-0.75),
+         y0=ifelse(reference.genome.obj$strand=="+",4.0,0.5),
          x1=ifelse(reference.genome.obj$strand=="+",reference.genome.obj$end,reference.genome.obj$start),
-         y1=ifelse(reference.genome.obj$strand=="+",2.75+0.40,1.75-0.75),
-         arr.type="triangle",arr.width=0.30,arr.length=0.15,
+         y1=ifelse(reference.genome.obj$strand=="+",4.0,0.5),
+         arr.type="triangle",arr.width=0.25,arr.length=0.10,
          col=sample(viridis::inferno(length(reference.genome.obj$start)),
                     size=length(reference.genome.obj$start),replace=TRUE),
          lty=1,lwd=gene.feature.width,arr.lwd=gene.feature.width)
 
   # Show a horizontal line (genome) between the forward and reverse strands
-  segments(xlim.vals[1],2.00,xlim.vals[2],2.00,lwd=1.01)
+  segments(xlim.vals[1],2.25,xlim.vals[2],2.25,lwd=1.01)
 
   # Show gene labels in the plot
   if( show.gene.label ){
