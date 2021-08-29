@@ -3,11 +3,16 @@ Title: RCandy:  an R package for rapid visualisation of homologous recombination
        events in bacterial genomes
 Version: 1.0.0
 Authors@R: 
-    person(given = "Chrispin",
+    c(person(given = "Chrispin",
            family = "Chaguza",
            role = c("aut", "cre"),
            email = "Chrispin.Chaguza@gmail.com",
-           comment = c(ORCID = "0000-0002-2108-1757"))
+           comment = c(ORCID = "0000-0002-2108-1757")),
+    person(given = "Gerry",
+           family = "Tonkin-Hill",
+           role = c("aut"),
+           email = "gt4@sanger.ac.uk",
+           comment = c(ORCID = " 0000-0003-4397-2224 ")))
 Description: Plots a phylogenetic tree in context of taxon
     metadata and recombination events identified by Gubbins (Croucher et
     al. 2015. <https://pubmed.ncbi.nlm.nih.gov/25414349/>) and BRATNextGen
