@@ -29,6 +29,7 @@
 #' @param ref.genome.length An optional reference genome length, otherwise it's read from the reference genome GFF file or data frame.
 #' @param show.rec.freq.per.base A Boolean indicating whether to show the frequency of recombination per genomic position/base.
 #' @param show.rec.freq.per.genome A Boolean indicating whether to show the frequency of recombination events per genome/taxon.
+#' @param show.rec.per.genome.scale A boolean indicating whether to show the barplot scale for the number of recombination events per genome.
 #' @param rec.events.per.base.as.heatmap A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).
 #' @param ladderize.tree.right A Boolean indicating whether to ladderize the phylogenetic tree to the right.
 #' @param midpoint.root A Boolean indicating whether to root the phylogenetic tree at midpoint.
@@ -122,7 +123,8 @@ RCandyVis <- function(tree.file.name,
                       taxon.metadata.delimeter="\t",
                       ref.genome.length=NULL,
                       show.rec.freq.per.base=FALSE,
-                      show.rec.freq.per.genome=FALSE,
+                      show.rec.freq.per.genome=TRUE,
+                      show.rec.per.genome.scale=FALSE,
                       rec.events.per.base.as.heatmap=TRUE,
                       ladderize.tree.right=NULL,
                       midpoint.root=FALSE,
@@ -154,6 +156,7 @@ RCandyVis <- function(tree.file.name,
   if(!is.logical(show.metadata.label)) stop("'show.metadata.label' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.freq.per.base)) stop("'show.rec.freq.per.base' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.freq.per.genome)) stop("'show.rec.freq.per.genome' must be one of TRUE or FALSE")
+  if(!is.logical(show.rec.per.genome.scale)) stop("'show.rec.per.genome.scale' must be one of TRUE or FALSE")
   if(!is.logical(rec.events.per.base.as.heatmap)) stop("'rec.events.per.base.as.heatmap' must be one of TRUE or FALSE")
   if(!is.numeric(rec.plot.bg.transparency)) stop("'rec.plot.bg.transparency' must be between 0 and 1")
   if(!is.logical(show.genome.annot)) stop("'show.genome.annot' must be one of TRUE or FALSE")
@@ -1231,15 +1234,20 @@ RCandyVis <- function(tree.file.name,
   ################################  PANEL 15 - RECOMBINATION EVENTS PER GENOME  #####################################
   {
     par(mai=c(0,0,0,0))
-    if( isTRUE(show.rec.freq.per.genome) & isTRUE(show.rec.events) ){
-      rec.events.per.taxon<-count.rec.events.per.genome(gubbins.gff.file=gubbins.gff.file,taxon.names=names(taxon.names) )
-      rec.freq.ticks <- pretty(0,max(rec.events.per.taxon))
-      barplot(rec.events.per.taxon,xaxs="i",yaxs="r",border=NA,
-              horiz = TRUE,yaxt="n",xaxt="n",xlim=c(0,max(rec.events.per.taxon)+5),xlab=NA,ylab=NA)
-      axis(1,at=rec.freq.ticks,
-           labels=rec.freq.ticks )
-    }else{
-      show.blank.plot()
+    if(isTRUE(show.rec.freq.per.genome) & !is.null(gubbins.gff.file) ){
+      if( isTRUE(show.rec.events) ){
+        if(isTRUE(show.rec.per.genome.scale)){
+          rec.events.per.taxon<-count.rec.events.per.genome(gubbins.gff.file=gubbins.gff.file,taxon.names=names(taxon.names) )
+          barplot(rec.events.per.taxon,xaxs="i",yaxs="r",border=NA,
+                  horiz=TRUE,yaxt="n",xlab=NA,ylab=NA)
+        }else{
+          rec.events.per.taxon<-count.rec.events.per.genome(gubbins.gff.file=gubbins.gff.file,taxon.names=names(taxon.names) )
+          barplot(rec.events.per.taxon,xaxs="i",yaxs="r",border=NA,
+                  horiz=TRUE,yaxt="n",xaxt="n",xlab=NA,ylab=NA)
+        }
+      }else{
+        show.blank.plot()
+      }
     }
   }
 

@@ -30,7 +30,8 @@ RCandyVis(
   taxon.metadata.delimeter = "\\t",
   ref.genome.length = NULL,
   show.rec.freq.per.base = FALSE,
-  show.rec.freq.per.genome = FALSE,
+  show.rec.freq.per.genome = TRUE,
+  show.rec.per.genome.scale = FALSE,
   rec.events.per.base.as.heatmap = TRUE,
   ladderize.tree.right = NULL,
   midpoint.root = FALSE,
@@ -104,6 +105,8 @@ RCandyVis(
 \item{show.rec.freq.per.base}{A Boolean indicating whether to show the frequency of recombination per genomic position/base.}
 
 \item{show.rec.freq.per.genome}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon.}
+
+\item{show.rec.per.genome.scale}{A boolean indicating whether to show the barplot scale for the number of recombination events per genome.}
 
 \item{rec.events.per.base.as.heatmap}{A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).}
 
