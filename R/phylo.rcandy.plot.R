@@ -118,7 +118,7 @@ RCandyVis <- function(tree.file.name,
                       tree.scale.length=NULL,
                       show.rec.events=TRUE,
                       show.metadata.label=TRUE,
-                      taxon.metadata.label.cex=0.85,
+                      taxon.metadata.label.cex=0.95,
                       taxon.metadata.delimeter="\t",
                       ref.genome.length=NULL,
                       show.rec.freq.per.base=FALSE,
@@ -161,6 +161,8 @@ RCandyVis <- function(tree.file.name,
   if(!is.logical(show.tip.label)) stop("'show.tip.label' must be one of TRUE or FALSE")
   if(!is.logical(align.tip.label)) stop("'align.tip.label' must be one of TRUE or FALSE")
   if(!is.logical(show.fig.legend)) stop("'show.fig.legend' must be one of TRUE or FALSE")
+
+  taxon.metadata.columns.names<-taxon.metadata.columns
 
   # Check if a valid reference genome name is provided
   if( is.character(ref.genome.name) ){
@@ -363,7 +365,7 @@ RCandyVis <- function(tree.file.name,
           # Check if all the specified metadata columns are available in the data frame
           if( length(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)))==0 ){
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
@@ -373,7 +375,7 @@ RCandyVis <- function(tree.file.name,
         }else{
           # Read the matadata file and extract the metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
@@ -386,7 +388,7 @@ RCandyVis <- function(tree.file.name,
           # Check if some specified metadata columns are not available in the metadata file
           if( length(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)))==0 ){
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,include.first.col=TRUE,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
@@ -398,7 +400,7 @@ RCandyVis <- function(tree.file.name,
           taxon.metadata.columns<-unique(taxon.metadata.columns)
           # Read the metadata file and extract the specified metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,include.first.col=TRUE,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
@@ -410,7 +412,7 @@ RCandyVis <- function(tree.file.name,
         if( length(base::setdiff(class(taxon.metadata.file),c("tbl_df","tbl","grouped_df","data.frame","rowwise_df")))==0 ){
           if(length(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)))==0){
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
@@ -420,7 +422,7 @@ RCandyVis <- function(tree.file.name,
         }else{
           # Read the metadata file and extract the specified metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,taxon.id.column=taxon.id.column,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
@@ -431,7 +433,7 @@ RCandyVis <- function(tree.file.name,
             # Include the taxon ID column (first column) among metadata columns to extract from the metadata file
             taxon.metadata.columns<-unique(c(taxon.metadata.columns))
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                              taxon.metadata.columns=taxon.metadata.columns,
+                                              taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,include.first.col=TRUE,
                                               taxon.metadata.delimeter=taxon.metadata.delimeter)
           }else{
@@ -441,7 +443,7 @@ RCandyVis <- function(tree.file.name,
         }else{
           # Read the metadata file and extract the specified metadata columns
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
-                                            taxon.metadata.columns=taxon.metadata.columns,
+                                            taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,include.first.col=TRUE,
                                             taxon.metadata.delimeter=taxon.metadata.delimeter)
         }
@@ -539,11 +541,16 @@ RCandyVis <- function(tree.file.name,
   }
 
   # Check if the user specified colors are valid
-  if(!is.null(taxon.metadata.columns.colors) & (length(taxon.metadata.columns)!=length(taxon.metadata.columns.colors))){
-    stop("Number of metadata columns and columns containing custom colour definitions are not equal")
-  }else{
-    if(length(setdiff(taxon.metadata.columns.colors,colnames(tmp.data.val)))>0){
-      stop("Some column names in taxon.metadata.columns.colors are not found in the metadata file")
+  if(!is.null(taxon.metadata.columns.colors)){
+    if(is.null(color.tree.tips.by.column)){
+      if(length(taxon.metadata.columns.names)!=length(taxon.metadata.columns.colors)){
+        stop("Number of metadata columns and columns containing custom colour definitions are not equal")
+      }
+    }else{
+      taxon.metadata.columns.id<-setdiff(taxon.metadata.columns,color.tree.tips.by.column)
+      if((length(taxon.metadata.columns.names)!=length(taxon.metadata.columns.colors))){
+        stop("Number of metadata columns and columns containing custom colour definitions are not equal")
+      }
     }
   }
 
@@ -609,14 +616,17 @@ RCandyVis <- function(tree.file.name,
     pdf(file=save.to.this.file,width=plot.width,height=plot.height)
   }
 
+  taxon.metadata.columns.id<-c(taxon.metadata.columns.names,
+                               setdiff(c(color.tree.tips.by.column,trait.for.ancestral.reconstr),taxon.metadata.columns.names))
+
   # Check if metadata colour strips and figure legend should be plotted and specify the correct dimension for the panels
   if( !is.null(taxon.metadata.file) ){
-    if(length(taxon.metadata.columns)<=4 ){
+    if(length(taxon.metadata.columns.id)<=4 ){
       strip.legend.size<-0.50
       metadata.panel.width<-0.50
     }else{
       if( isTRUE(show.metadata.columns) ){
-        metadata.panel.width<-(length(taxon.metadata.columns)/4)*1.00
+        metadata.panel.width<-(length(taxon.metadata.columns.id)/4)*1.05
       }else{
         metadata.panel.width<-0.05
       }
@@ -626,9 +636,9 @@ RCandyVis <- function(tree.file.name,
     strip.legend.size<-0.05
   }
   if( isTRUE(show.fig.legend) ){
-    strip.legend.size<-0.50+((length(taxon.metadata.columns)/4)*0.50)
+    strip.legend.size<-0.50+((length(taxon.metadata.columns.id)/4)*0.20)
   }else{
-    strip.legend.size<-0.25
+    strip.legend.size<-0.20
   }
 
   # Specify correct panel for the recombination frequency/heatmap per genomic position
@@ -682,15 +692,18 @@ RCandyVis <- function(tree.file.name,
   {
     ## Show metadata column colour strips in the diagram
     # Check if metadata column colour strip labels should be shown and whether the metadata file or data frame is available
+
+    taxon.metadata.columns.id<-taxon.metadata.columns.names
+
     if( isTRUE(show.metadata.columns) & !is.null(taxon.metadata.file) & isTRUE( show.metadata.label ) ){
       # Add metadata column names after the phylogenetic tree
       par(mai=c(0,0,0,0))
       plot(1:4,1:4,col=rgb(0,0,0,alpha=0),bty="n",xaxt="n",yaxt="n",xlab=NA,ylab=NA,
-           xlim=c(0,length(taxon.metadata.columns)+0.5),ylim=c(1,length(taxons.ordered)),
+           xlim=c(0,length(taxon.metadata.columns.id)+0.5),ylim=c(1,length(taxons.ordered)),
            xaxs="i",yaxs="r")
       loop.val<-1
       # Add each metadata column name
-      for(count.val in taxon.metadata.columns){
+      for(count.val in taxon.metadata.columns.id){
         text(loop.val,1,count.val,srt=metadata.column.label.angle,adj=0,cex=taxon.metadata.label.cex)
         loop.val<-loop.val+1
       }
@@ -721,12 +734,13 @@ RCandyVis <- function(tree.file.name,
           pheno.to.reconstr<-stats::setNames(unname(unlist(tmp.data.val.X[,trait.for.ancestral.reconstr])),unname(unlist(tmp.data.val.X[,2])) )
           pheno.to.reconstr<-as.factor(pheno.to.reconstr)
           cols<-stats::setNames(color.pallette(length(unique(pheno.to.reconstr))),levels(pheno.to.reconstr))
+
           # Run ancestral reconstruction
           fitARD.ALL<-NULL
           if( length(unique(pheno.to.reconstr))>1 ){
             ancestral.reconstr.warning <- tryCatch(fitARD.ALL<-ace(x=pheno.to.reconstr,phy=tree.to.plot,model=ace.model.name,type="discrete",CI=TRUE),
                                                    error=function(e) e, warning=function(w) w)
-            if(is(ancestral.reconstr.warning,"warning")){
+            if(methods::is(ancestral.reconstr.warning,"warning")){
               cat("Too many states may have been specified for ancestral reconstruction but with insufficient tip/taxon data. Try specifying a different model for the 'ace.model.name' parameter")
               }
           }else{
@@ -752,7 +766,7 @@ RCandyVis <- function(tree.file.name,
         }else{
           plot.phylo(tree.to.plot,show.tip.label=TRUE,align.tip.label=align.tip.label,
                      cex=tree.tip.label.cex,edge.width=1.251,yaxs="r")
-          if( !is.null(taxon.metadata.file) ){
+          if( length(unique(pheno.to.reconstr))>1 ){
             # Include ancestral character reconstruction data
             ape::nodelabels(pie=fitARD.ALL$lik.anc,cex=tree.node.cex,piecol = cols)
             ape::tiplabels(pie=to.matrix(pheno.to.reconstr[tree.to.plot$tip.label],levels(pheno.to.reconstr)),piecol=cols,cex=tree.tip.node.cex)
@@ -767,10 +781,13 @@ RCandyVis <- function(tree.file.name,
         }else{
           plot.phylo(tree.to.plot,show.tip.label=show.tip.label,align.tip.label=FALSE,
                      cex=tree.tip.label.cex,edge.width=1.251,yaxs="r")
-          if( !is.null(taxon.metadata.file) ){
-            # Include ancestral character reconstruction data
-            ape::nodelabels(pie=fitARD.ALL$lik.anc,cex=tree.node.cex,piecol = cols)
-            ape::tiplabels(pie=to.matrix(pheno.to.reconstr[tree.to.plot$tip.label],levels(pheno.to.reconstr)),piecol=cols,cex=tree.tip.node.cex)
+          if( !is.null(taxon.metadata.file) & length(unique(pheno.to.reconstr))>1 ){
+            if( length(unique(pheno.to.reconstr))>1 ){
+              # Include ancestral character reconstruction data
+              ape::nodelabels(pie=fitARD.ALL$lik.anc,cex=tree.node.cex,piecol = cols)
+              ape::tiplabels(pie=to.matrix(pheno.to.reconstr[tree.to.plot$tip.label],levels(pheno.to.reconstr)),piecol=cols,cex=tree.tip.node.cex)
+
+            }
           }
         }
       }
@@ -807,24 +824,28 @@ RCandyVis <- function(tree.file.name,
         }
       }
     }
-    if( !is.null(color.tree.tips.by.column) & is.null(trait.for.ancestral.reconstr) ){
-      if( color.tree.tips.by.column %in% taxon.metadata.columns ){
-        tmp.data.val.X1<-tmp.data.val[unname(unlist(tmp.data.val[,2])) %in% tree.to.plot$tip.label,]
-        tmp.data.pos<-unname(unlist(tmp.data.val.X1[,1]))
-        tmp.data.trait<-tmp.data.val.X1[,color.tree.tips.by.column]
-        tmp.data.id<-unname(unlist(tmp.data.val.X1[,2]))
-        tmp.dat.final<-data.frame(rank=tmp.data.pos,id=tmp.data.id,trait=tmp.data.trait)
-        rownames(tmp.dat.final)<-tmp.dat.final$id
-        tmp.dat.final<-tmp.dat.final[tree.to.plot$tip.label,]
-        tmp.dat.final$rank<-1:length(tmp.dat.final$rank)
-        tree.tip.vals<-tmp.dat.final[,c(1,2,3)] %>% dplyr::mutate(VAL=1) %>% dplyr::arrange(3) %>%
-          tidyr::spread(key=3,value=4,fill=0) %>% dplyr::select(-id) %>% dplyr::arrange(rank) %>%
-          tibble::column_to_rownames(var="rank") %>% as.matrix()
-        tree.tip.vals<-tree.tip.vals/rowSums(tree.tip.vals)
-        ape::tiplabels(tip=1:dim(tree.tip.vals)[1],pie=tree.tip.vals,
-                       piecol=color.pallette(dim(tree.tip.vals)[2]),cex=tree.tip.node.cex)
+    if( !is.null(color.tree.tips.by.column) ){
+      if(!is.null(color.tree.tips.by.column) & !is.null(trait.for.ancestral.reconstr)){
+        cat("Tips will be coloured by trait.for.ancestral.reconstr option and color.tree.tips.by.column will be ignored")
       }else{
-        stop("Attribte for colouring tree tips not found in the metadata")
+        if( color.tree.tips.by.column %in% taxon.metadata.columns ){
+          tmp.data.val.X1<-tmp.data.val[unname(unlist(tmp.data.val[,2])) %in% tree.to.plot$tip.label,]
+          tmp.data.pos<-unname(unlist(tmp.data.val.X1[,1]))
+          tmp.data.trait<-tmp.data.val.X1[,color.tree.tips.by.column]
+          tmp.data.id<-unname(unlist(tmp.data.val.X1[,2]))
+          tmp.dat.final<-data.frame(rank=tmp.data.pos,id=tmp.data.id,trait=tmp.data.trait)
+          rownames(tmp.dat.final)<-tmp.dat.final$id
+          tmp.dat.final<-tmp.dat.final[tree.to.plot$tip.label,]
+          tmp.dat.final$rank<-1:length(tmp.dat.final$rank)
+          tree.tip.vals<-tmp.dat.final[,c(1,2,3)] %>% dplyr::mutate(VAL=1) %>% dplyr::arrange(3) %>%
+            tidyr::spread(key=3,value=4,fill=0) %>% dplyr::select(-id) %>% dplyr::arrange(.data$rank) %>%
+            tibble::column_to_rownames(var="rank") %>% as.matrix()
+          tree.tip.vals<-tree.tip.vals/rowSums(tree.tip.vals)
+          ape::tiplabels(tip=1:dim(tree.tip.vals)[1],pie=tree.tip.vals,
+                         piecol=color.pallette(dim(tree.tip.vals)[2]),cex=tree.tip.node.cex)
+        }else{
+          stop("Attribute for colouring tree tips not found in the metadata")
+        }
       }
     }
   }
@@ -835,23 +856,26 @@ RCandyVis <- function(tree.file.name,
     # Check if the metadata column colour strips should be shown and whether the metadata file or data frame is available
     if( isTRUE(show.metadata.columns) & !is.null(taxon.metadata.file) ){
       # Add metadata column colour strips after the phylogenetic tree
+
+      taxon.metadata.columns.id<-taxon.metadata.columns.names
+
       par(mai=c(0,0,0,0))
       plot(1,0.5,col=rgb(0,0,0,alpha=0),bty="n",xaxt="n",yaxt="n",xlab=NA,ylab=NA,
-           xlim=c(0,length(taxon.metadata.columns)+0.5),ylim=c(1,length(taxons.ordered)+0.5),xaxs="i",yaxs="r" )
+           xlim=c(0,length(taxon.metadata.columns.id)+0.5),ylim=c(1,length(taxons.ordered)+0.5),xaxs="i",yaxs="r" )
       loop.val<-1
-      for(count.val in taxon.metadata.columns){
+
+      for(count.val in taxon.metadata.columns.id){
         if(is.null(taxon.metadata.columns.colors)){
-          strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)] %>% as.data.frame()
-          rownames(strips.tmp)<-gsub("^NA$","N/A",unname(unlist(tmp.data.val[,2])))
-          colnames(strips.tmp)<-c("pos","trait")
-          strips.tmp$trait<-as.factor(strips.tmp$trait)
-          strips.vals<-sort(unique(unname(unlist(strips.tmp$trait))))
+          strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
+          strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
           strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
-          strips.tmp$col<-strips.tmp.cols[ unname(unlist(strips.tmp$trait)) ]
+          strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
+          strips.tmp<-strips.tmp %>% unique()
+          colnames(strips.tmp)<-c("pos","trait","col")
         }else{
           strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),taxon.metadata.columns.colors[loop.val]][[1]],
                                  pos=tmp.data.val[order(tmp.data.val$pos),"pos"][[1]]) %>%
-            dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(col))),col,NA))
+            dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),col,NA))
         }
 
         graphics::rect(loop.val-0.5,strips.tmp$pos-0.5,
@@ -1081,14 +1105,17 @@ RCandyVis <- function(tree.file.name,
              bty="n",xaxt="n",yaxt="n",xaxs="i",yaxs="r",col=rgb(0,0,0,alpha=0),
              xlab="Chromosome position (bp)",ylab=expression("N"[rec]),xaxt="n")
 
-        temp.vals.fr<-temp.vals.fr %>% dplyr::arrange(POS) %>% dplyr::mutate(N=lead(POS)) %>%
-          dplyr::mutate(N=ifelse(is.na(N),POS+1,N)) %>% dplyr::mutate(RR=N-POS) %>% ungroup() %>%
-          dplyr::mutate(Q=data.table::rleid(RR)) %>% dplyr::mutate(XX=paste0(Q,".",FRQ)) %>%
-          dplyr::mutate(Q1=data.table::rleid(XX)) %>% dplyr::mutate(XX1=paste0(Q1,".",XX)) %>%
-          dplyr::group_by(XX1) %>%
-          dplyr::mutate(start=dplyr::first(POS),end=dplyr::last(POS)) %>%
-          dplyr::select(FRQ,XX1,start,end) %>% dplyr::distinct() %>% dplyr::ungroup() %>%
-          dplyr::arrange(end) %>% dplyr::select(FRQ,start,end)
+        temp.vals.fr<-temp.vals.fr %>% dplyr::arrange(.data$POS) %>% dplyr::mutate(N=lead(.data$POS)) %>%
+          dplyr::mutate(N=ifelse(is.na(.data$N),.data$POS+1,.data$N)) %>%
+          dplyr::mutate(RR=.data$N-.data$POS) %>% ungroup() %>%
+          dplyr::mutate(Q=data.table::rleid(.data$RR)) %>%
+          dplyr::mutate(XX=paste0(.data$Q,".",.data$FRQ)) %>%
+          dplyr::mutate(Q1=data.table::rleid(.data$XX)) %>%
+          dplyr::mutate(XX1=paste0(.data$Q1,".",.data$XX)) %>% dplyr::group_by(.data$XX1) %>%
+          dplyr::mutate(start=dplyr::first(.data$POS),end=dplyr::last(.data$POS)) %>%
+          dplyr::select(.data$FRQ,.data$XX1,.data$start,.data$end) %>%
+          dplyr::distinct() %>% dplyr::ungroup() %>%
+          dplyr::arrange(.data$end) %>% dplyr::select(.data$FRQ,.data$start,.data$end)
 
         genome.ticks <- pretty(c(genome.start,genome.end))
 
@@ -1125,36 +1152,59 @@ RCandyVis <- function(tree.file.name,
       plot(genome.start,genome.end,las=1,xlim=c(0,length(taxon.metadata.columns)+10 ),ylim=c(0,10),bty="n",xaxt="n",yaxt="n",
            xlab="",ylab="",col=rgb(0,0,0,alpha=0),xaxs="i",yaxs="r")
       loop.val<-1
-      for(count.val in rev(taxon.metadata.columns)){
+      loop.val1<-0
+
+      taxon.metadata.columns.id<-c(taxon.metadata.columns.names,
+                                   setdiff(c(color.tree.tips.by.column,trait.for.ancestral.reconstr),taxon.metadata.columns.names))
+
+      for(count.val in rev(taxon.metadata.columns.id)){
         if(is.null(taxon.metadata.columns.colors)){
           strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
           strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
           strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
           strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
-
-          strips.tmp<-tmp.data.val[,c("pos",count.val)] %>% as.data.frame()
-          rownames(strips.tmp)<-gsub("^NA$","N/A",unname(unlist(tmp.data.val[,2])))
-          colnames(strips.tmp)<-c("pos","trait")
-          strips.tmp$trait<-as.factor(strips.tmp$trait)
+          strips.tmp<-strips.tmp[,-1] %>% unique()
+          colnames(strips.tmp)<-c("trait","col")
 
           if(show.fig.legend){
-            legend(0,loop.val*(10/length(taxon.metadata.columns)),fill=unname(strips.tmp.cols),legend=names(strips.tmp.cols),
+            legend(0,loop.val*(10/length(taxon.metadata.columns.id)),fill=strips.tmp$col,legend=strips.tmp$trait,
                    cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
           }
-
+          loop.val<-loop.val+1
+          loop.val1<-loop.val1+1
         }else{
-          tmp.dat<-data.frame(XX=tmp.data.val[order(tmp.data.val$pos),rev(taxon.metadata.columns.colors)[loop.val]][[1]],
-                               trait=tmp.data.val[order(tmp.data.val$pos),c(count.val)][[1]]) %>%
-            dplyr::rowwise() %>% dplyr::mutate(XX=ifelse(isTRUE(unname(is.color(XX))),XX,NA)) %>%
-            unique() #%>% dplyr::arrange(trait)
+          if(is.null(color.tree.tips.by.column)){
+            strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),rev(taxon.metadata.columns.colors)[loop.val]][[1]],
+                                trait=tmp.data.val[order(tmp.data.val$pos),c(count.val)][[1]]) %>%
+              dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),.data$col,NA)) %>%
+              unique() %>% dplyr::arrange(.data$trait)
+            loop.val<-loop.val+1
+            loop.val1<-loop.val1+1
+          }else{
+
+            if(color.tree.tips.by.column==count.val){
+              strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
+              strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
+              strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
+              strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
+              strips.tmp<-strips.tmp[,-1] %>% unique()
+              colnames(strips.tmp)<-c("trait","col")
+              loop.val1<-loop.val1+1
+            }else{
+              strips.tmp<-data.frame(col=tmp.data.val[,rev(taxon.metadata.columns.colors)[loop.val]][[1]],
+                                  trait=tmp.data.val[,count.val][[1]]) %>%
+                dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),col,NA)) %>%
+                unique() %>% dplyr::arrange(.data$trait)
+              loop.val<-loop.val+1
+              loop.val1<-loop.val1+1
+            }
+          }
 
           if(show.fig.legend){
-            legend(0,loop.val*(10/length(taxon.metadata.columns)),fill=tmp.dat$XX,legend=tmp.dat$trait,
+            legend(0,loop.val1*(10/length(taxon.metadata.columns.id)),fill=strips.tmp$col,legend=strips.tmp$trait,
                    cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
           }
         }
-
-        loop.val<-loop.val+1
       }
     }else{
       # Hide legend for each metadata column

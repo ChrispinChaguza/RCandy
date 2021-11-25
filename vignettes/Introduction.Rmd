@@ -221,13 +221,13 @@ RCandyVis(tree.file.name = tree1, midpoint.root = TRUE, ladderize.tree.right = T
 
 Sometimes we may want to identify recombination hotspots or genomic regions containing many unique but overlapping recombination events. Below we specify the show.rec.freq.plot option to turn on this feature. *Note that with this feature there may be significant latency even when the number of recombination events is small*
 
-```
+```{r}
 RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"), taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, show.rec.freq.per.base = TRUE)
 ```
 
 Sometimes a user may want to specify custom colours for the metadata columns. This can be done by specifying a vector of column names containing the custom colours for each isolate using the *taxon.metadata.columns.colors* option as shown in the example below.
 
-```
+```{r}
 RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, taxon.metadata.file = metadata.file, taxon.metadata.columns = c("ermB","mefA","cat"), taxon.metadata.columns.colors=c("ermB_color","mefA_color","cat_color"), taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE)
 ```
 

@@ -12,7 +12,7 @@ You can install RCandy from [GitHub](https://github.com/ChrispinChaguza/RCandy/)
 
 ``` r
 install.packages("devtools")
-devtools::install_github("ChrispinChaguza/RCandy")
+devtools::install_github("ChrispinChaguza/RCandy", build_vignettes = FALSE)
 ```
 
 Note, R version &gt;3.6 is required to install the package.
@@ -126,6 +126,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
     genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, color.tree.tips.by.column = "Country", 
     trait.for.ancestral.reconstr = "mefA")
+#> Tips will be coloured by trait.for.ancestral.reconstr option and color.tree.tips.by.column will be ignored
 ```
 
 <img src="inst/vignette-supp/unnamed-chunk-9-1.png" width="100%" />
@@ -238,11 +239,28 @@ RCandyVis(tree.file.name = tree1, midpoint.root = TRUE, ladderize.tree.right = T
 
 Sometimes we may want to identify recombination hotspots or genomic regions containing many unique but overlapping recombination events. Below we specify the show.rec.freq.plot option to turn on this feature. *Note that with this feature there may be significant latency even when the number of recombination events is small*.
 
-    RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"), taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, show.rec.freq.per.base = TRUE)
+``` r
+RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
+    taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
+    taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
+    show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, 
+    show.rec.plot.tracks = TRUE, show.rec.freq.per.base = TRUE)
+```
+
+<img src="inst/vignette-supp/unnamed-chunk-18-1.png" width="100%" />
 
 Sometimes a user may want to specify custom colours for the metadata columns. This can be done by specifying a vector of column names containing the custom colours for each isolate using the *taxon.metadata.columns.colors* option as shown in the example below.
 
-    RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, taxon.metadata.file = metadata.file, taxon.metadata.columns = c("ermB","mefA","cat"), taxon.metadata.columns.colors=c("ermB_color","mefA_color","cat_color"), taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE)
+``` r
+RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
+    taxon.metadata.file = metadata.file, taxon.metadata.columns = c("ermB", "mefA", 
+        "cat"), taxon.metadata.columns.colors = c("ermB_color", "mefA_color", "cat_color"), 
+    taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
+    show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, 
+    show.rec.plot.tracks = TRUE)
+```
+
+<img src="inst/vignette-supp/unnamed-chunk-19-1.png" width="100%" />
 
 Another interesting feature is the ability to specify preloaded files for plotting. In the example below we use example dataset containing preloaded objects for the phylogenetic tree, metadata, recombination events ([GFF](\url%7Bhttps://en.wikipedia.org/wiki/General_feature_format%7D)) and reference genome (GFF).
 
@@ -265,7 +283,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     color.pallette = "inferno", gene.label.angle = 90)
 ```
 
-<img src="inst/vignette-supp/unnamed-chunk-19-1.png" width="100%" />
+<img src="inst/vignette-supp/unnamed-chunk-21-1.png" width="100%" />
 
 The data objects used above can be loaded in the correct format using the code below.
 
@@ -297,7 +315,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     color.pallette = "inferno", gene.label.angle = 90)
 ```
 
-<img src="inst/vignette-supp/unnamed-chunk-22-1.png" width="100%" />
+<img src="inst/vignette-supp/unnamed-chunk-24-1.png" width="100%" />
 
 ## Other options
 
@@ -348,9 +366,9 @@ sessionInfo()
 #> [43] grid_4.0.3              quadprog_1.5-8          tools_4.0.3            
 #> [46] magrittr_2.0.1          maps_3.3.0              tibble_3.0.6           
 #> [49] crayon_1.4.1            pkgconfig_2.0.3         MASS_7.3-53            
-#> [52] ellipsis_0.3.1          Matrix_1.2-18           rmarkdown_2.5          
-#> [55] viridis_0.5.1           R6_2.5.0                igraph_1.2.6           
-#> [58] nlme_3.1-150            compiler_4.0.3
+#> [52] ellipsis_0.3.1          Matrix_1.2-18           data.table_1.13.2      
+#> [55] rmarkdown_2.5           viridis_0.5.1           R6_2.5.0               
+#> [58] igraph_1.2.6            nlme_3.1-150            compiler_4.0.3
 ```
 
 ## References

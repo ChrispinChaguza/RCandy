@@ -101,7 +101,7 @@ show.genome.annotation.plot<-function(genome.name,
          lty=1,lwd=gene.feature.width,arr.lwd=gene.feature.width)
 
   # Show a horizontal line (genome) between the forward and reverse strands
-  segments(xlim.vals[1],2.25,xlim.vals[2],2.25,lwd=1.01)
+  segments(xlim.vals[1],2.25,xlim.vals[2],2.25,lwd=1.01,lty=4)
 
   # Show gene labels in the plot
   if( show.gene.label ){

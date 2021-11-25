@@ -26,7 +26,7 @@ RCandyVis(
   tree.scale.length = NULL,
   show.rec.events = TRUE,
   show.metadata.label = TRUE,
-  taxon.metadata.label.cex = 0.85,
+  taxon.metadata.label.cex = 0.95,
   taxon.metadata.delimeter = "\\t",
   ref.genome.length = NULL,
   show.rec.freq.per.base = FALSE,

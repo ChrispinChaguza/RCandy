@@ -21,6 +21,9 @@ Depends:
 Imports:
     ape,
     dplyr,
+    methods,
+    data.table,
+    ggplot2,
     graphics,
     grDevices,
     magrittr,
