@@ -18,6 +18,7 @@ RCandyVis(
   show.metadata.columns = TRUE,
   subtree.tips = NULL,
   color.pallette = "inferno",
+  taxon.metadata.columns.colors = NULL,
   taxon.id.column = NULL,
   show.genome.ticks = TRUE,
   show.genome.axis = TRUE,
@@ -33,11 +34,11 @@ RCandyVis(
   rec.events.per.base.as.heatmap = TRUE,
   ladderize.tree.right = NULL,
   midpoint.root = FALSE,
-  show.rec.plot.bg = TRUE,
+  rec.plot.bg.transparency = 0.1,
   show.genome.annot = TRUE,
   show.rec.plot.tracks = FALSE,
   show.rec.plot.border = FALSE,
-  ace.model.name = "ARD",
+  ace.model.name = "ER",
   trait.for.ancestral.reconstr = NULL,
   save.to.this.file = NULL,
   plot.width = 12,
@@ -78,6 +79,8 @@ RCandyVis(
 
 \item{color.pallette}{A vector containing names of the viridis colour palletes for visualisation. Choose from "plasma", "cividis", "viridis", "magma" and "inferno".}
 
+\item{taxon.metadata.columns.colors}{A vector containing column names with custom colours (should be equal in size and same order as the vector specified for taxon.metadata.columns option)}
+
 \item{taxon.id.column}{Character or string for the column name containing the strain/taxon name in the metadata file.}
 
 \item{show.genome.ticks}{A Boolean indicating whether to show the xticks for the recombination events diagram/heatmap.}
@@ -108,7 +111,7 @@ RCandyVis(
 
 \item{midpoint.root}{A Boolean indicating whether to root the phylogenetic tree at midpoint.}
 
-\item{show.rec.plot.bg}{A Boolean indicating whether to show background for the recombination events diagram/heatmap.}
+\item{rec.plot.bg.transparency}{A value between 0 and 1 indicating the transparency level of the background for the recombination events diagram/heatmap.}
 
 \item{show.genome.annot}{A Boolean indicating whether to show genome annotation above the recombination events diagram/heatmap.}
 

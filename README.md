@@ -1,5 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 # RCandy
 
 <!-- badges: start -->
@@ -16,6 +15,29 @@ install.packages("devtools")
 devtools::install_github("ChrispinChaguza/RCandy")
 ```
 
+Note, R version &gt;3.6 is required to install the package.
+
+-   Recommended version of R:
+    -   R (&gt;= 3.6)
+-   Required dependencies:
+    -   ape,
+    -   dplyr,
+    -   graphics,
+    -   grDevices,
+    -   magrittr,
+    -   phytools,
+    -   shape,
+    -   stats,
+    -   stringr,
+    -   tibble,
+    -   tidyr,
+    -   utils,
+    -   viridis
+-   Other optional packages (may be required to build vignettes)
+    -   knitr,
+    -   rmarkdown,
+    -   markdown
+
 Run the code below to build the vignette.
 
 ``` r
@@ -31,6 +53,8 @@ library(tidyr)
 ## Load sample data
 
 In this example, we will load sample data for *Streptococcus pneumoniae* sequence type (ST) 320. This data was generated using genomes described in [*Gladstone RA et al. EBioMedicine. 2019 May;43:338-346. doi: 10.1016/j.ebiom.2019.04.021. Epub 2019 Apr 16. PMID: 31003929; PMCID: PMC6557916*](https://pubmed.ncbi.nlm.nih.gov/31003929/)
+
+Note that the metadata file is optional.
 
 ``` r
 tree.file <- system.file("extdata", "ST320.final_tree.tre", package = "RCandy", mustWork = TRUE)
@@ -120,14 +144,14 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
 
 <img src="inst/vignette-supp/unnamed-chunk-10-1.png" width="100%" />
 
-We could also turn off the background for the recombination diagram using *show.rec.plot.bg* option.
+We could also turn off the background for the recombination diagram using *rec.plot.bg.transparency* option.
 
 ``` r
 RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
     genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, color.tree.tips.by.column = "Country", 
-    show.rec.plot.border = TRUE, show.rec.plot.tracks = TRUE, show.rec.plot.bg = FALSE)
+    show.rec.plot.border = TRUE, show.rec.plot.tracks = TRUE, rec.plot.bg.transparency = 0.15)
 ```
 
 <img src="inst/vignette-supp/unnamed-chunk-11-1.png" width="100%" />
@@ -139,7 +163,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
     genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, color.tree.tips.by.column = "Country", 
-    show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE, show.tip.label = TRUE)
+    rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, show.tip.label = TRUE)
 ```
 
 <img src="inst/vignette-supp/unnamed-chunk-12-1.png" width="100%" />
@@ -151,7 +175,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
     genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, color.tree.tips.by.column = "Country", 
-    show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE, color.pallette = "viridis")
+    rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, color.pallette = "viridis")
 ```
 
 <img src="inst/vignette-supp/unnamed-chunk-13-1.png" width="100%" />
@@ -163,7 +187,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
     genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, color.tree.tips.by.column = "Country", 
-    show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE, color.pallette = "viridis", 
+    rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, color.pallette = "viridis", 
     gene.label.angle = 90)
 ```
 
@@ -176,7 +200,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
     genome.start = 30000, genome.end = 60000, show.gene.label = TRUE, color.tree.tips.by.column = "Country", 
-    show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE, color.pallette = "viridis", 
+    rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, color.pallette = "viridis", 
     gene.label.angle = 90, metadata.column.label.angle = 45)
 ```
 
@@ -188,10 +212,10 @@ Sometimes we may want to see recombination events in specific taxa. We could spe
 tree1 <- ape::read.tree(tree.file)
 subtree.taxa <- tree1$tip.label[1:50]
 
-RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
+RCandyVis(tree.file.name = tree1, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
-    show.gene.label = FALSE, color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, 
+    show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, 
     show.rec.plot.tracks = TRUE, subtree.tips = subtree.taxa)
 ```
 
@@ -203,14 +227,22 @@ Sometimes we may want to identify recombination hotspots or genomic regions cont
 tree1 <- ape::read.tree(tree.file)
 subtree.taxa <- tree1$tip.label[1:50]
 
-RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
+RCandyVis(tree.file.name = tree1, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
-    show.gene.label = FALSE, color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, 
-    show.rec.plot.tracks = TRUE, show.rec.freq.per.genome = TRUE)
+    show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, 
+    show.rec.plot.tracks = TRUE, show.rec.freq.per.genome = TRUE, subtree.tips = subtree.taxa)
 ```
 
 <img src="inst/vignette-supp/unnamed-chunk-17-1.png" width="100%" />
+
+Sometimes we may want to identify recombination hotspots or genomic regions containing many unique but overlapping recombination events. Below we specify the show.rec.freq.plot option to turn on this feature. *Note that with this feature there may be significant latency even when the number of recombination events is small*.
+
+    RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source","Country"), taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, show.rec.freq.per.base = TRUE)
+
+Sometimes a user may want to specify custom colours for the metadata columns. This can be done by specifying a vector of column names containing the custom colours for each isolate using the *taxon.metadata.columns.colors* option as shown in the example below.
+
+    RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, taxon.metadata.file = metadata.file, taxon.metadata.columns = c("ermB","mefA","cat"), taxon.metadata.columns.colors=c("ermB_color","mefA_color","cat_color"), taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, show.gene.label = FALSE, color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE)
 
 Another interesting feature is the ability to specify preloaded files for plotting. In the example below we use example dataset containing preloaded objects for the phylogenetic tree, metadata, recombination events ([GFF](\url%7Bhttps://en.wikipedia.org/wiki/General_feature_format%7D)) and reference genome (GFF).
 
@@ -229,7 +261,7 @@ Then we plot the recombination events using the same code as above.
 RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
-    color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE, 
+    color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, 
     color.pallette = "inferno", gene.label.angle = 90)
 ```
 
@@ -261,7 +293,7 @@ Let's draw the recombination plot again to see if the data was loaded correctly.
 RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
     taxon.metadata.file = metadata.file, taxon.metadata.columns = c("Source", "Country"), 
     taxon.id.column = "ID", gubbins.gff.file = gubbins.gff, ref.genome.name = ref.genome.gff, 
-    color.tree.tips.by.column = "Country", show.rec.plot.bg = TRUE, show.rec.plot.tracks = TRUE, 
+    color.tree.tips.by.column = "Country", rec.plot.bg.transparency = 0.15, show.rec.plot.tracks = TRUE, 
     color.pallette = "inferno", gene.label.angle = 90)
 ```
 
@@ -269,7 +301,7 @@ RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right
 
 ## Other options
 
-There are many options that can be used to customise the plots. These include hiding the figure legend using *show.fig.legend*, hiding the number of recombination events identified in each genome *show.rec.freq.per.genome*, hiding metadata columns *show.metadata.columns*, save the plot to a PDF file (or other types including PNG, JPG and SVG) using *save.to.this.file* for use in publications either directly or editing in Inkscape and Adobe Illustrator, and adjusting plot height and width using *plot.height* and *plot.width* respectively.
+There are many options that can be used to customise the plots. These include hiding the figure legend using *show.fig.legend*, increasing the font size for the tips or taxa using *tree.tip.label.cex*, hiding the number of recombination events identified in each genome *show.rec.freq.per.genome*, hiding metadata columns *show.metadata.columns*, save the plot to a PDF file (or other types including PNG, JPG and SVG) using *save.to.this.file* for use in publications either directly or editing in Inkscape and Adobe Illustrator, and adjusting plot height and width using *plot.height* and *plot.width* respectively.
 
 ## Some suggestions
 

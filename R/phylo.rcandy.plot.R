@@ -16,6 +16,7 @@
 #' @param show.metadata.columns A Boolean indicating whether or not to show metadata in the figure.
 #' @param subtree.tips A vector containing a subset of taxons/taxa used to generate a subtree from the main phylogenetic tree.
 #' @param color.pallette A vector containing names of the viridis colour palletes for visualisation. Choose from "plasma", "cividis", "viridis", "magma" and "inferno".
+#' @param taxon.metadata.columns.colors A vector containing column names with custom colours (should be equal in size and same order as the vector specified for taxon.metadata.columns option)
 #' @param taxon.id.column Character or string for the column name containing the strain/taxon name in the metadata file.
 #' @param show.genome.ticks A Boolean indicating whether to show the xticks for the recombination events diagram/heatmap.
 #' @param show.genome.axis A Boolean indicating whether to show the axis for the recombination events diagram/heatmap.
@@ -31,7 +32,7 @@
 #' @param rec.events.per.base.as.heatmap A Boolean indicating whether to show the frequency of recombination events per genome/taxon as a barchart or colour scale (heatmap).
 #' @param ladderize.tree.right A Boolean indicating whether to ladderize the phylogenetic tree to the right.
 #' @param midpoint.root A Boolean indicating whether to root the phylogenetic tree at midpoint.
-#' @param show.rec.plot.bg A Boolean indicating whether to show background for the recombination events diagram/heatmap.
+#' @param rec.plot.bg.transparency A value between 0 and 1 indicating the transparency level of the background for the recombination events diagram/heatmap.
 #' @param show.genome.annot A Boolean indicating whether to show genome annotation above the recombination events diagram/heatmap.
 #' @param show.rec.plot.tracks A Boolean indicating whether to plot genome tracks for each taxa.
 #' @param show.rec.plot.border A Boolean indicating whether to show the border for the recombination events diagram/heatmap.
@@ -109,6 +110,7 @@ RCandyVis <- function(tree.file.name,
                       show.metadata.columns=TRUE,
                       subtree.tips=NULL,
                       color.pallette="inferno",
+                      taxon.metadata.columns.colors=NULL,
                       taxon.id.column=NULL,
                       show.genome.ticks=TRUE,
                       show.genome.axis=TRUE,
@@ -124,11 +126,11 @@ RCandyVis <- function(tree.file.name,
                       rec.events.per.base.as.heatmap=TRUE,
                       ladderize.tree.right=NULL,
                       midpoint.root=FALSE,
-                      show.rec.plot.bg=TRUE,
+                      rec.plot.bg.transparency=0.10,
                       show.genome.annot=TRUE,
                       show.rec.plot.tracks=FALSE,
                       show.rec.plot.border=FALSE,
-                      ace.model.name="ARD",
+                      ace.model.name="ER",
                       trait.for.ancestral.reconstr=NULL,
                       save.to.this.file=NULL,
                       plot.width=12,
@@ -153,7 +155,7 @@ RCandyVis <- function(tree.file.name,
   if(!is.logical(show.rec.freq.per.base)) stop("'show.rec.freq.per.base' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.freq.per.genome)) stop("'show.rec.freq.per.genome' must be one of TRUE or FALSE")
   if(!is.logical(rec.events.per.base.as.heatmap)) stop("'rec.events.per.base.as.heatmap' must be one of TRUE or FALSE")
-  if(!is.logical(show.rec.plot.bg)) stop("'show.rec.plot.bg' must be one of TRUE or FALSE")
+  if(!is.numeric(rec.plot.bg.transparency)) stop("'rec.plot.bg.transparency' must be between 0 and 1")
   if(!is.logical(show.genome.annot)) stop("'show.genome.annot' must be one of TRUE or FALSE")
   if(!is.logical(show.rec.plot.border)) stop("'show.rec.plot.border' must be one of TRUE or FALSE")
   if(!is.logical(show.tip.label)) stop("'show.tip.label' must be one of TRUE or FALSE")
@@ -245,9 +247,9 @@ RCandyVis <- function(tree.file.name,
   }
 
   # Check the options for plotting the recombination frequency plot
-  if(!isTRUE(show.rec.freq.per.base) & isTRUE(rec.events.per.base.as.heatmap)){
-    warning("'show.rec.freq.per.base' is FALSE...ignoring 'rec.events.per.base.as.heatmap'")
-  }
+  ##if(!isTRUE(show.rec.freq.per.base) & isTRUE(rec.events.per.base.as.heatmap)){
+  ##  warning("'show.rec.freq.per.base' is FALSE...ignoring 'rec.events.per.base.as.heatmap'")
+  ##}
 
   # Specify the viridis colour pallete to use
   if(color.pallette %in% c("viridis","inferno","magma","cividis","plasma")){
@@ -536,6 +538,15 @@ RCandyVis <- function(tree.file.name,
     tmp.data.val<-tmp.data.val[taxons.ordered,]
   }
 
+  # Check if the user specified colors are valid
+  if(!is.null(taxon.metadata.columns.colors) & (length(taxon.metadata.columns)!=length(taxon.metadata.columns.colors))){
+    stop("Number of metadata columns and columns containing custom colour definitions are not equal")
+  }else{
+    if(length(setdiff(taxon.metadata.columns.colors,colnames(tmp.data.val)))>0){
+      stop("Some column names in taxon.metadata.columns.colors are not found in the metadata file")
+    }
+  }
+
   # Check that valid custom colours are provided for the recombination diagram
   if( length(rec.heatmap.color)==2 ){
     if( !is.color(rec.heatmap.color[1]) & is.color(rec.heatmap.color[2]) ){
@@ -711,11 +722,16 @@ RCandyVis <- function(tree.file.name,
           pheno.to.reconstr<-as.factor(pheno.to.reconstr)
           cols<-stats::setNames(color.pallette(length(unique(pheno.to.reconstr))),levels(pheno.to.reconstr))
           # Run ancestral reconstruction
+          fitARD.ALL<-NULL
           if( length(unique(pheno.to.reconstr))>1 ){
-            fitARD.ALL<-ace(x=pheno.to.reconstr,phy=tree.to.plot,model=ace.model.name,type="discrete",CI=TRUE)
+            ancestral.reconstr.warning <- tryCatch(fitARD.ALL<-ace(x=pheno.to.reconstr,phy=tree.to.plot,model=ace.model.name,type="discrete",CI=TRUE),
+                                                   error=function(e) e, warning=function(w) w)
+            if(is(ancestral.reconstr.warning,"warning")){
+              cat("Too many states may have been specified for ancestral reconstruction but with insufficient tip/taxon data. Try specifying a different model for the 'ace.model.name' parameter")
+              }
           }else{
             trait.for.ancestral.reconstr<-NULL
-            warning("Skipping ancestral character reconstruction on the phylogeny - at least two trait values are required")
+            cat("Skipping ancestral character reconstruction on the phylogeny - at least two trait values are required")
           }
         }
       }else{
@@ -824,13 +840,20 @@ RCandyVis <- function(tree.file.name,
            xlim=c(0,length(taxon.metadata.columns)+0.5),ylim=c(1,length(taxons.ordered)+0.5),xaxs="i",yaxs="r" )
       loop.val<-1
       for(count.val in taxon.metadata.columns){
-        strips.tmp<-tmp.data.val[,c("pos",count.val)] %>% as.data.frame()
-        rownames(strips.tmp)<-gsub("^NA$","N/A",unname(unlist(tmp.data.val[,2])))
-        colnames(strips.tmp)<-c("pos","trait")
-        strips.tmp$trait<-as.factor(strips.tmp$trait)
-        strips.vals<-sort(unique(unname(unlist(strips.tmp$trait))))
-        strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
-        strips.tmp$col<-strips.tmp.cols[ unname(unlist(strips.tmp$trait)) ]
+        if(is.null(taxon.metadata.columns.colors)){
+          strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)] %>% as.data.frame()
+          rownames(strips.tmp)<-gsub("^NA$","N/A",unname(unlist(tmp.data.val[,2])))
+          colnames(strips.tmp)<-c("pos","trait")
+          strips.tmp$trait<-as.factor(strips.tmp$trait)
+          strips.vals<-sort(unique(unname(unlist(strips.tmp$trait))))
+          strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
+          strips.tmp$col<-strips.tmp.cols[ unname(unlist(strips.tmp$trait)) ]
+        }else{
+          strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),taxon.metadata.columns.colors[loop.val]][[1]],
+                                 pos=tmp.data.val[order(tmp.data.val$pos),"pos"][[1]]) %>%
+            dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(col))),col,NA))
+        }
+
         graphics::rect(loop.val-0.5,strips.tmp$pos-0.5,
                        loop.val+0.5,strips.tmp$pos+0.5,col=strips.tmp$col,lwd=0.001,border=strips.tmp$col)
         loop.val<-loop.val+1
@@ -854,20 +877,23 @@ RCandyVis <- function(tree.file.name,
         plot(0,0,las=1,xlim=c(genome.start,genome.end),ylim=c(1,length(taxon.names)+0.5 ),bty="n",xaxt="n",yaxt="n",
              xlab="",ylab="Genome",col=rgb(0,0,0,alpha=0),xaxs="i",yaxs="r")
         # Show x-axis only if recombination frequency plot is not shown
-        genome.ticks <- formatC(seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)), format="d", digits=0)
+
+        genome.ticks <- pretty(c(genome.start,genome.end))
+
+        ##genome.ticks <- formatC(seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)), format="d", digits=0)
         if( !isTRUE(show.rec.freq.per.base) ){
           if( isTRUE(show.rec.freq.per.genome) ){
-            axis(1,at=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis,
-                 labels=c(genome.ticks[1:5],""))
+            axis(1,at=genome.ticks,lwd.ticks=show.genome.ticks,lwd=show.genome.axis,
+                 labels=formatC(pretty(c(genome.start, genome.end)),digits = 0,format = "d" ))
           }else{
-            axis(1,at=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis,
-                 labels=genome.ticks)
+            axis(1,at=genome.ticks,lwd.ticks=show.genome.ticks,lwd=show.genome.axis,
+                 labels=formatC(pretty(c(genome.start, genome.end)),digits = 0,format = "d" ))
           }
         }
         # Show background colour for the recombination matrix diagram
-        if( isTRUE(show.rec.plot.bg) & !is.null(ref.genome.name) ){
+        if( is.numeric(rec.plot.bg.transparency) & !is.null(ref.genome.name) ){
           graphics::rect(genome.start-0.5,0.45,
-                         genome.end,length(taxon.names)+0.45,lty=6,col=rgb(0,0,0,alpha=0.035),lwd=0.0,border=rgb(0,0,0,alpha=0.035))
+                         genome.end,length(taxon.names)+0.45,lty=6,col=rgb(0,0,0,alpha=rec.plot.bg.transparency),lwd=0.0,border=rgb(0,0,0,alpha=0.035))
         }
         # Adjust the line colours appropriately depending on whether the diagram is shown in R or saved to file
         if( is.null(save.to.this.file) ){
@@ -1036,14 +1062,16 @@ RCandyVis <- function(tree.file.name,
       # Show the recombination frequency plot
       par(mai=c(0,0,0,0))
       if(!isTRUE(rec.events.per.base.as.heatmap)){
+        genome.ticks <- pretty(c(genome.start,genome.end))
+
         temp.vals.fr<-count.rec.events.per.base(gubbins.gff.file=gubbins.gff.file,recom.input.type=recom.input.type)
         plot(0,0,las=1,xlim=c(genome.start,genome.end),ylim=c(0,max(temp.vals.fr$FRQ)+1 ),
              bty="n",xaxt="n",yaxt="n",xaxs="i",yaxs="i",col=rgb(0,0,0,alpha=0),
              xlab="Chromosome position (bp)",ylab=expression("N"[rec]),xaxt="n")
-        axis(1,at=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
-             labels=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),las=1)
-        axis(2,at=seq(0,max(temp.vals.fr$FRQ),floor((max(temp.vals.fr$FRQ)+1)/4)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
-             labels=seq(0,max(temp.vals.fr$FRQ),floor((max(temp.vals.fr$FRQ)+1)/4)),las=1)
+        axis(1,at=genome.ticks,lwd.ticks=show.genome.ticks,lwd=show.genome.axis,
+             labels=formatC(pretty(c(genome.start,genome.end)),digits = 0,format = "d" ),las=1)
+        axis(2,at=genome.ticks,lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
+             labels=formatC(pretty(c(genome.start,genome.end)),digits = 0,format = "d" ),las=1)
         polygon(c(min(temp.vals.fr$POS),temp.vals.fr$POS,max(temp.vals.fr$POS)),
                 c(min(temp.vals.fr$FRQ),temp.vals.fr$FRQ,min(temp.vals.fr$FRQ)),
                 col=rgb(0,0,0,alpha=1),border=FALSE,lwd=20)
@@ -1062,8 +1090,10 @@ RCandyVis <- function(tree.file.name,
           dplyr::select(FRQ,XX1,start,end) %>% dplyr::distinct() %>% dplyr::ungroup() %>%
           dplyr::arrange(end) %>% dplyr::select(FRQ,start,end)
 
-        axis(1,at=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
-             labels=seq(genome.start,genome.end,floor((genome.end-genome.start+1)/5)),las=1)
+        genome.ticks <- pretty(c(genome.start,genome.end))
+
+        axis(1,at=genome.ticks,lwd.ticks=show.genome.ticks,lwd=show.genome.axis, #lwd.ticks=1,lwd=0,
+             labels=formatC(pretty(c(genome.start,genome.end)),digits = 0,format = "d" ),las=1)
 
         rect(genome.start,0.05,
              genome.end,1.0,
@@ -1096,14 +1126,34 @@ RCandyVis <- function(tree.file.name,
            xlab="",ylab="",col=rgb(0,0,0,alpha=0),xaxs="i",yaxs="r")
       loop.val<-1
       for(count.val in rev(taxon.metadata.columns)){
-        strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
-        strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
-        strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
-        strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
-        if(show.fig.legend){
-          legend(0,loop.val*(10/length(taxon.metadata.columns)),fill=unname(strips.tmp.cols),legend=names(strips.tmp.cols),
-                 cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
+        if(is.null(taxon.metadata.columns.colors)){
+          strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
+          strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
+          strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
+          strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
+
+          strips.tmp<-tmp.data.val[,c("pos",count.val)] %>% as.data.frame()
+          rownames(strips.tmp)<-gsub("^NA$","N/A",unname(unlist(tmp.data.val[,2])))
+          colnames(strips.tmp)<-c("pos","trait")
+          strips.tmp$trait<-as.factor(strips.tmp$trait)
+
+          if(show.fig.legend){
+            legend(0,loop.val*(10/length(taxon.metadata.columns)),fill=unname(strips.tmp.cols),legend=names(strips.tmp.cols),
+                   cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
+          }
+
+        }else{
+          tmp.dat<-data.frame(XX=tmp.data.val[order(tmp.data.val$pos),rev(taxon.metadata.columns.colors)[loop.val]][[1]],
+                               trait=tmp.data.val[order(tmp.data.val$pos),c(count.val)][[1]]) %>%
+            dplyr::rowwise() %>% dplyr::mutate(XX=ifelse(isTRUE(unname(is.color(XX))),XX,NA)) %>%
+            unique() #%>% dplyr::arrange(trait)
+
+          if(show.fig.legend){
+            legend(0,loop.val*(10/length(taxon.metadata.columns)),fill=tmp.dat$XX,legend=tmp.dat$trait,
+                   cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
+          }
         }
+
         loop.val<-loop.val+1
       }
     }else{
@@ -1133,10 +1183,11 @@ RCandyVis <- function(tree.file.name,
     par(mai=c(0,0,0,0))
     if( isTRUE(show.rec.freq.per.genome) & isTRUE(show.rec.events) ){
       rec.events.per.taxon<-count.rec.events.per.genome(gubbins.gff.file=gubbins.gff.file,taxon.names=names(taxon.names) )
+      rec.freq.ticks <- pretty(0,max(rec.events.per.taxon))
       barplot(rec.events.per.taxon,xaxs="i",yaxs="r",border=NA,
               horiz = TRUE,yaxt="n",xaxt="n",xlim=c(0,max(rec.events.per.taxon)+5),xlab=NA,ylab=NA)
-      axis(1,at=floor(seq(0,max(rec.events.per.taxon)+5,length.out=3)),
-           labels=floor(seq(0,max(rec.events.per.taxon)+5,length.out=3)) )
+      axis(1,at=rec.freq.ticks,
+           labels=rec.freq.ticks )
     }else{
       show.blank.plot()
     }
