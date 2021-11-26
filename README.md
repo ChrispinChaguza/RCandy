@@ -319,7 +319,7 @@ There are many options that can be used to customise the plots. These include hi
 
 ## Some suggestions
 
-*We recommend using [readseq](https://sourceforge.net/projects/readseq/) to convert the reference genome annotation to the GFF format. Other tools can also be used but readseq is recommended to get the best results.*
+We recommend using [readseq](https://anaconda.org/bioconda/readseq) to convert the reference genome annotation to the GFF format. Other tools can also be used but *readseq* is recommended to get the best results.
 
 Another similar tool for interactive visualisation of recombination events is *Phandango* available [here](https://jameshadfield.github.io/phandango/#/) and described [here](https://academic.oup.com/bioinformatics/article/34/2/292/4212949). If you are only interested in visualising the phylogenetic tree and associated metadata without recombination events, [*ggtree*](https://github.com/YuLab-SMU/ggtree) and [*microreact*](https://microreact.org/showcase) offer many useful functionalities.
 

@@ -17,8 +17,8 @@
 #'
 #' @source Gladstone RA, Lo SW et al. International genomic definition of pneumococcal lineages, to contextualise disease, antibiotic resistance and vaccine impact. EBioMedicine. 2019 May;43:338-346. doi: 10.1016/j.ebiom.2019.04.021. Epub 2019 Apr 16. PMID: 31003929; PMCID: PMC6557916.
 #'
-#' @source The Global Pneumococcal Sequencing (GPS) Consortium: \url{https://www.pneumogen.net/gps/}
+#' @source The Global Pneumococcal Sequencing (GPS) Consortium: https://www.pneumogen.net/gps/
 #'
-#' @source The reference whole genome sequence was obtained from GenBank (accession number: NC_010380): \url{https://www.ncbi.nlm.nih.gov/nuccore/NC_010380.1}.
+#' @source The reference whole genome sequence was obtained from GenBank (accession number: NC_010380): https://www.ncbi.nlm.nih.gov/nuccore/NC_010380.1.
 
 "RCandy"
