@@ -624,12 +624,12 @@ RCandyVis <- function(tree.file.name,
 
   # Check if metadata colour strips and figure legend should be plotted and specify the correct dimension for the panels
   if( !is.null(taxon.metadata.file) ){
-    if(length(taxon.metadata.columns.id)<=4 ){
+    if(length(taxon.metadata.columns.names)<=4 ){
       strip.legend.size<-0.50
       metadata.panel.width<-0.50
     }else{
-      if( isTRUE(show.metadata.columns) ){
-        metadata.panel.width<-(length(taxon.metadata.columns.id)/4)*1.05
+      if( isTRUE(show.metadata.columns.names) ){
+        metadata.panel.width<-(length(taxon.metadata.columns.names)/4)*1.05
       }else{
         metadata.panel.width<-0.05
       }
@@ -1157,6 +1157,7 @@ RCandyVis <- function(tree.file.name,
       loop.val<-1
       loop.val1<-0
 
+      taxon.metadata.columns.id<-taxon.metadata.columns
       for(count.val in rev(taxon.metadata.columns.id)){
         if(is.null(taxon.metadata.columns.colors)){
           strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
