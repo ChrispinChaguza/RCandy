@@ -744,7 +744,7 @@ RCandyVis <- function(tree.file.name,
             ancestral.reconstr.warning <- tryCatch(fitARD.ALL<-ace(x=pheno.to.reconstr,phy=tree.to.plot,model=ace.model.name,type="discrete",CI=TRUE),
                                                    error=function(e) e, warning=function(w) w)
             if(methods::is(ancestral.reconstr.warning,"warning")){
-              cat("Too many states may have been specified for ancestral reconstruction but with insufficient tip/taxon data. Try specifying a different model for the 'ace.model.name' parameter")
+              stop("Too many states may have been specified for ancestral reconstruction but with insufficient tip/taxon data. Try specifying a different model for the 'ace.model.name' parameter")
               }
           }else{
             trait.for.ancestral.reconstr<-NULL
@@ -1157,7 +1157,19 @@ RCandyVis <- function(tree.file.name,
       loop.val<-1
       loop.val1<-0
 
-      taxon.metadata.columns.id<-taxon.metadata.columns
+      if(is.null(color.tree.tips.by.column) & !is.null(trait.for.ancestral.reconstr)){
+        taxon.metadata.columns.id<-c(taxon.metadata.columns.names,
+                                     setdiff(trait.for.ancestral.reconstr,taxon.metadata.columns.names))
+      }else if(!is.null(color.tree.tips.by.column) & is.null(trait.for.ancestral.reconstr)){
+        taxon.metadata.columns.id<-c(taxon.metadata.columns.names,
+                                     setdiff(color.tree.tips.by.column,taxon.metadata.columns.names))
+      }else if(!is.null(color.tree.tips.by.column) & !is.null(trait.for.ancestral.reconstr)){
+        taxon.metadata.columns.id<-c(taxon.metadata.columns.names,
+                                     setdiff(c(color.tree.tips.by.column,trait.for.ancestral.reconstr),taxon.metadata.columns.names))
+      }else{
+        taxon.metadata.columns.id<-taxon.metadata.columns.names
+      }
+
       for(count.val in rev(taxon.metadata.columns.id)){
         if(is.null(taxon.metadata.columns.colors)){
           strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
@@ -1175,11 +1187,12 @@ RCandyVis <- function(tree.file.name,
           loop.val1<-loop.val1+1
         }else{
           if(is.null(color.tree.tips.by.column)){
-            ww<<-tmp.data.val; rr<<-loop.val
-            strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),rev(taxon.metadata.columns.colors)[loop.val]][[1]],
-                                trait=tmp.data.val[order(tmp.data.val$pos),c(count.val)][[1]]) %>%
-              dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),.data$col,NA)) %>%
-              unique() %>% dplyr::arrange(.data$trait)
+            strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
+            strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
+            strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
+            strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
+            strips.tmp<-strips.tmp[,-1] %>% unique()
+            colnames(strips.tmp)<-c("trait","col")
             loop.val<-loop.val+1
             loop.val1<-loop.val1+1
           }else{
@@ -1192,10 +1205,13 @@ RCandyVis <- function(tree.file.name,
               colnames(strips.tmp)<-c("trait","col")
               loop.val1<-loop.val1+1
             }else{
-              strips.tmp<-data.frame(col=tmp.data.val[,rev(taxon.metadata.columns.colors)[loop.val]][[1]],
-                                  trait=tmp.data.val[,count.val][[1]]) %>%
-                dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),col,NA)) %>%
-                unique() %>% dplyr::arrange(.data$trait)
+              strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
+              strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
+              strips.tmp.cols<-stats::setNames(color.pallette(length(strips.vals)),strips.vals )
+              strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
+              strips.tmp<-strips.tmp[,-1] %>% unique()
+              colnames(strips.tmp)<-c("trait","col")
+
               loop.val<-loop.val+1
               loop.val1<-loop.val1+1
             }
