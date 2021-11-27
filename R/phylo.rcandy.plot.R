@@ -1157,9 +1157,6 @@ RCandyVis <- function(tree.file.name,
       loop.val<-1
       loop.val1<-0
 
-      taxon.metadata.columns.id<-c(taxon.metadata.columns.names,
-                                   setdiff(c(color.tree.tips.by.column,trait.for.ancestral.reconstr),taxon.metadata.columns.names))
-
       for(count.val in rev(taxon.metadata.columns.id)){
         if(is.null(taxon.metadata.columns.colors)){
           strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
@@ -1177,6 +1174,7 @@ RCandyVis <- function(tree.file.name,
           loop.val1<-loop.val1+1
         }else{
           if(is.null(color.tree.tips.by.column)){
+            ww<<-tmp.data.val; rr<<-loop.val
             strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),rev(taxon.metadata.columns.colors)[loop.val]][[1]],
                                 trait=tmp.data.val[order(tmp.data.val$pos),c(count.val)][[1]]) %>%
               dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),.data$col,NA)) %>%
@@ -1184,7 +1182,6 @@ RCandyVis <- function(tree.file.name,
             loop.val<-loop.val+1
             loop.val1<-loop.val1+1
           }else{
-
             if(color.tree.tips.by.column==count.val){
               strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
               strips.vals<-gsub("^NA$","N/A",sort(unique(unname(unlist(strips.tmp[,count.val])))))
