@@ -875,10 +875,12 @@ RCandyVis <- function(tree.file.name,
           strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
           strips.tmp<-strips.tmp %>% unique()
           colnames(strips.tmp)<-c("pos","trait","col")
+          strips.tmp<-strips.tmp[order(strips.tmp$trait),]
         }else{
           strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),taxon.metadata.columns.colors[loop.val]][[1]],
                                  pos=tmp.data.val[order(tmp.data.val$pos),"pos"][[1]]) %>%
             dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),col,NA))
+          strips.tmp<-strips.tmp[order(strips.tmp$trait),]
         }
 
         graphics::rect(loop.val-0.5,strips.tmp$pos-0.5,
@@ -1180,6 +1182,7 @@ RCandyVis <- function(tree.file.name,
           colnames(strips.tmp)<-c("trait","col")
 
           if(show.fig.legend){
+            strips.tmp<-strips.tmp[order(strips.tmp$trait),]
             legend(0,loop.val*(10/length(taxon.metadata.columns.id)),fill=strips.tmp$col,legend=strips.tmp$trait,
                    cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
           }
@@ -1218,6 +1221,7 @@ RCandyVis <- function(tree.file.name,
           }
 
           if(show.fig.legend){
+            strips.tmp<-strips.tmp[order(strips.tmp$trait),]
             legend(0,loop.val1*(10/length(taxon.metadata.columns.id)),fill=strips.tmp$col,legend=strips.tmp$trait,
                    cex=0.75,title=count.val,bty="n",bg="transparent",horiz=TRUE,xjust=0,yjust=1)
           }
