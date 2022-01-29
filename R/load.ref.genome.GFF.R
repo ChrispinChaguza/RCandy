@@ -27,7 +27,7 @@ load.genome.GFF<-function(reference.genome){
   if( !is.null(reference.genome) & is.character(reference.genome) ){
   # Same coordinates for the genome region to show, default whole genome
   # Read the reference genome GFF annotation file
-  tmp.ref.df<-dplyr::as_tibble(read.table(reference.genome,comment.char="#",header=FALSE,sep="\t",fill=TRUE,row.names=NULL)) %>%
+  tmp.ref.df<-dplyr::as_tibble(read.csv(reference.genome,comment.char="#",header=FALSE,sep="\t",fill=TRUE,row.names=NULL)) %>%
     dplyr::filter((!grepl("#",V1)) | V1!="seqname" )
   colnames(tmp.ref.df)<-c("seqname","source","feature","start","end","score","strand","frame","attributes")
   tmp.ref.df<-tmp.ref.df[!tmp.ref.df$source %in% c("source"),]
@@ -35,8 +35,9 @@ load.genome.GFF<-function(reference.genome){
   reference.genome.obj1<-tmp.ref.df %>%
     dplyr::mutate(seqname=gsub("# ","",.data$seqname)) %>% mutate(seqname=gsub("^#","",.data$seqname)) %>%
     dplyr::filter(!grepl("gff-version",.data$seqname)) %>%
-    dplyr::filter(!.data$feature %in% c("ORIGIN","NA","","##")) %>%
-    dplyr::mutate(start=as.integer(.data$start),end=as.integer(.data$end)) %>% dplyr::filter(.data$feature %in% c("source","locus_tag","gene","CDS"))
+    dplyr::filter(!.data$feature %in% c("ORIGIN","NA","","##") & .data$seqname!="") %>%
+    dplyr::mutate(start=as.integer(.data$start),end=as.integer(.data$end)) %>%
+    dplyr::filter(.data$feature %in% c("source","locus_tag","gene","CDS"))
 
   # Filter out lines not containing information about the genetic features
   colnames(reference.genome.obj1)<-c("seqname","source","feature","start","end","score","strand","frame","attributes")

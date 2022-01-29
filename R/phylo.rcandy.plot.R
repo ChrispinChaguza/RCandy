@@ -877,10 +877,10 @@ RCandyVis <- function(tree.file.name,
           colnames(strips.tmp)<-c("pos","trait","col")
           strips.tmp<-strips.tmp[order(strips.tmp$trait),]
         }else{
-          strips.tmp<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),taxon.metadata.columns.colors[loop.val]][[1]],
+          strips.tmp<<-data.frame(col=tmp.data.val[order(tmp.data.val$pos),taxon.metadata.columns.colors[loop.val]][[1]],
                                  pos=tmp.data.val[order(tmp.data.val$pos),"pos"][[1]]) %>%
             dplyr::rowwise() %>% dplyr::mutate(col=ifelse(isTRUE(unname(is.color(.data$col))),col,NA))
-          strips.tmp<-strips.tmp[order(strips.tmp$trait),]
+          ##strips.tmp<-strips.tmp[order(strips.tmp$trait),]
         }
 
         graphics::rect(loop.val-0.5,strips.tmp$pos-0.5,
@@ -1180,6 +1180,7 @@ RCandyVis <- function(tree.file.name,
           strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
           strips.tmp<-strips.tmp[,-1] %>% unique()
           colnames(strips.tmp)<-c("trait","col")
+          strips.tmp<-strips.tmp[order(strips.tmp$trait),]
 
           if(show.fig.legend){
             strips.tmp<-strips.tmp[order(strips.tmp$trait),]
@@ -1196,6 +1197,7 @@ RCandyVis <- function(tree.file.name,
             strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
             strips.tmp<-strips.tmp[,-1] %>% unique()
             colnames(strips.tmp)<-c("trait","col")
+            strips.tmp<-strips.tmp[order(strips.tmp$trait),]
             loop.val<-loop.val+1
             loop.val1<-loop.val1+1
           }else{
@@ -1206,6 +1208,7 @@ RCandyVis <- function(tree.file.name,
               strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
               strips.tmp<-strips.tmp[,-1] %>% unique()
               colnames(strips.tmp)<-c("trait","col")
+              strips.tmp<-strips.tmp[order(strips.tmp$trait),]
               loop.val1<-loop.val1+1
             }else{
               strips.tmp<-tmp.data.val[order(tmp.data.val$pos),c("pos",count.val)]
@@ -1214,7 +1217,7 @@ RCandyVis <- function(tree.file.name,
               strips.tmp$col<-strips.tmp.cols[ sapply(unname(unlist(strips.tmp[,2])), as.character)  ]
               strips.tmp<-strips.tmp[,-1] %>% unique()
               colnames(strips.tmp)<-c("trait","col")
-
+              strips.tmp<-strips.tmp[order(strips.tmp$trait),]
               loop.val<-loop.val+1
               loop.val1<-loop.val1+1
             }
