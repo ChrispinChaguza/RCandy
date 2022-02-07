@@ -628,7 +628,7 @@ RCandyVis <- function(tree.file.name,
       strip.legend.size<-0.50
       metadata.panel.width<-0.50
     }else{
-      if( isTRUE(show.metadata.columns.names) ){
+      if( isTRUE(show.metadata.columns) ){
         metadata.panel.width<-(length(taxon.metadata.columns.names)/4)*1.05
       }else{
         metadata.panel.width<-0.05
