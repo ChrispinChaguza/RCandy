@@ -30,6 +30,7 @@
 #' @import magrittr
 #' @import dplyr
 #' @importFrom stats setNames
+#' @importFrom data.table fread
 #'
 #' @author Chrispin Chaguza, \email{Chrispin.Chaguza@@gmail.com}
 #' @references \url{https://github.com/ChrispinChaguza/RCandy}
@@ -47,7 +48,8 @@ load.taxon.metadata<-function(taxon.metadata.file,
       # Check if the metadata file exists in the specified path
     if( file.exists(taxon.metadata.file) ){
       # Check if the user has specified the metadata column containing taxon IDs
-      tmp.taxon.data<-as_tibble(read.table(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter,comment.char="?"))
+      ####tmp.taxon.data<-as_tibble(read.table(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter,comment.char="?"))
+      tmp.taxon.data<-as_tibble(fread(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter))
     }else{
       # Stop execution when no valid metadata file is found
       stop("The following metadata file '",taxon.metadata.file,"' was not found.")
