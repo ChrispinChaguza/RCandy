@@ -372,3 +372,5 @@ sessionInfo()
 -   Croucher NJ, Page AJ, Connor TR, Delaney AJ, Keane JA, Bentley SD, Parkhill J, Harris SR. Rapid phylogenetic analysis of large samples of recombinant bacterial whole genome sequences using Gubbins. Nucleic Acids Res. 2015 Feb 18;43(3):e15. doi: 10.1093/nar/gku1196. Epub 2014 Nov 20. PMID: 25414349; PMCID: PMC4330336. <https://pubmed.ncbi.nlm.nih.gov/25414349/>.
 
 -   Marttinen P, Hanage WP, Croucher NJ, Connor TR, Harris SR, Bentley SD, Corander J. Detection of recombination events in bacterial genomes from large population samples. Nucleic Acids Res. 2012 Jan;40(1):e6. doi: 10.1093/nar/gkr928. Epub 2011 Nov 7. PMID: 22064866; PMCID: PMC3245952. <https://pubmed.ncbi.nlm.nih.gov/22064866/>.
+
+-   Chaguza C, Tonkin-Hill G, Lo SW, Hadfield J, Croucher NJ, Harris SR, Bentley SD. RCandy: an R package for visualising homologous recombinations in bacterial genomes. Bioinformatics. 2021 Dec 2;38(5):1450–1. doi: 10.1093/bioinformatics/btab814. Epub ahead of print. PMID: 34864895; PMCID: PMC8826011. <https://pubmed.ncbi.nlm.nih.gov/34864895/>.
