@@ -27,7 +27,7 @@ RCandyVis(
   show.rec.events = TRUE,
   show.metadata.label = TRUE,
   taxon.metadata.label.cex = 0.95,
-  taxon.metadata.delimeter = "\\t",
+  taxon.metadata.delimiter = "\\t",
   ref.genome.length = NULL,
   show.rec.freq.per.base = FALSE,
   show.rec.freq.per.genome = TRUE,
@@ -98,7 +98,7 @@ RCandyVis(
 
 \item{taxon.metadata.label.cex}{A number for the size of the labels for the selected matadata columns}
 
-\item{taxon.metadata.delimeter}{A delimeter separating metadata columns.}
+\item{taxon.metadata.delimiter}{A delimeter separating metadata columns.}
 
 \item{ref.genome.length}{An optional reference genome length, otherwise it's read from the reference genome GFF file or data frame.}
 

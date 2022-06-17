@@ -24,7 +24,7 @@
 #' @param tree.scale.length A positive number showing the length of the phylogenetic tree branches.
 #' @param show.rec.events A Boolean indicating whether to show the recombination event diagram/diagram.
 #' @param show.metadata.label A Boolean indicating whether to show labels for the selected metadata columns.
-#' @param taxon.metadata.delimeter A delimeter separating metadata columns.
+#' @param taxon.metadata.delimiter A delimeter separating metadata columns.
 #' @param taxon.metadata.label.cex A number for the size of the labels for the selected matadata columns
 #' @param ref.genome.length An optional reference genome length, otherwise it's read from the reference genome GFF file or data frame.
 #' @param show.rec.freq.per.base A Boolean indicating whether to show the frequency of recombination per genomic position/base.
@@ -120,7 +120,7 @@ RCandyVis <- function(tree.file.name,
                       show.rec.events=TRUE,
                       show.metadata.label=TRUE,
                       taxon.metadata.label.cex=0.95,
-                      taxon.metadata.delimeter="\t",
+                      taxon.metadata.delimiter="\t",
                       ref.genome.length=NULL,
                       show.rec.freq.per.base=FALSE,
                       show.rec.freq.per.genome=TRUE,
@@ -370,7 +370,7 @@ RCandyVis <- function(tree.file.name,
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                               taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,taxon.id.column=taxon.id.column,
-                                              taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                              taxon.metadata.delimiter=taxon.metadata.delimiter)
           }else{
             # Stop execution if some metadata columns are not available in the data frame
             stop("The following columns '",paste(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)),sep="",collapse=", "),"' were not found in the metadata file")
@@ -380,7 +380,7 @@ RCandyVis <- function(tree.file.name,
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                             taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,taxon.id.column=taxon.id.column,
-                                            taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                            taxon.metadata.delimiter=taxon.metadata.delimiter)
         }
       }else{
         # Read metadata file or data frame assumming the taxon ID is in the first column
@@ -393,7 +393,7 @@ RCandyVis <- function(tree.file.name,
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                               taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,include.first.col=TRUE,
-                                              taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                              taxon.metadata.delimiter=taxon.metadata.delimiter)
           }else{
             # Stop execution when some specified metadata columns are not available in the data frame
             stop("The following columns '",paste(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)),sep="",collapse=", "),"' were not found in the metadata file")
@@ -405,7 +405,7 @@ RCandyVis <- function(tree.file.name,
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                             taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,include.first.col=TRUE,
-                                            taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                            taxon.metadata.delimiter=taxon.metadata.delimiter)
         }
       }
     }else{
@@ -417,7 +417,7 @@ RCandyVis <- function(tree.file.name,
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                               taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,taxon.id.column=taxon.id.column,
-                                              taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                              taxon.metadata.delimiter=taxon.metadata.delimiter)
           }else{
             # Stop execution when some specified metadata columns are not available in the data frame
             stop("The following columns '",paste(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)),sep="",collapse=", "),"' were not found in the metadata file")
@@ -427,7 +427,7 @@ RCandyVis <- function(tree.file.name,
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                             taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,taxon.id.column=taxon.id.column,
-                                            taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                            taxon.metadata.delimiter=taxon.metadata.delimiter)
         }
       }else{
         ##warning("Column for taxon IDs not specified, assumming it's the first column in the metadata file")
@@ -438,7 +438,7 @@ RCandyVis <- function(tree.file.name,
             tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                               taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                               taxon.names=taxon.names,include.first.col=TRUE,
-                                              taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                              taxon.metadata.delimiter=taxon.metadata.delimiter)
           }else{
             # Stop execution when some specified metadata columns are not available in the data frame
             stop("The following columns '",paste(base::setdiff(c(taxon.metadata.columns),colnames(taxon.metadata.file)),sep="",collapse=", "),"' were not found in the metadata file")
@@ -448,7 +448,7 @@ RCandyVis <- function(tree.file.name,
           tmp.data.val<-load.taxon.metadata(taxon.metadata.file=taxon.metadata.file,
                                             taxon.metadata.columns=unique(c(taxon.metadata.columns,taxon.metadata.columns.colors)),
                                             taxon.names=taxon.names,include.first.col=TRUE,
-                                            taxon.metadata.delimeter=taxon.metadata.delimeter)
+                                            taxon.metadata.delimiter=taxon.metadata.delimiter)
         }
       }
     }

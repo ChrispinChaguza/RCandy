@@ -10,7 +10,7 @@ load.taxon.metadata(
   taxon.names = NULL,
   taxon.id.column = NULL,
   include.first.col = FALSE,
-  taxon.metadata.delimeter = "\\t"
+  taxon.metadata.delimiter = "\\t"
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ load.taxon.metadata(
 
 \item{include.first.col}{A Boolean value specifying whether to use the first column as the taxon names.}
 
-\item{taxon.metadata.delimeter}{A delimiter separating metadata columns.}
+\item{taxon.metadata.delimiter}{A delimiter separating metadata columns.}
 }
 \value{
 A data frame containing selected metadata columns and taxon names in the phylogenetic tree.

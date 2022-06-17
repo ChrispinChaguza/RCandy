@@ -13,7 +13,7 @@
 #' @param taxon.names A vector containing taxon names to select from the metadata file or data frames. These names must match the taxon names in the phylogenetic tree.
 #' @param taxon.id.column Column name in the matadata file or data frame containing taxon names.
 #' @param include.first.col A Boolean value specifying whether to use the first column as the taxon names.
-#' @param taxon.metadata.delimeter A delimiter separating metadata columns.
+#' @param taxon.metadata.delimiter A delimiter separating metadata columns.
 #'
 #' @return A data frame containing selected metadata columns and taxon names in the phylogenetic tree.
 #'
@@ -42,14 +42,14 @@ load.taxon.metadata<-function(taxon.metadata.file,
                               taxon.names=NULL,
                               taxon.id.column=NULL,
                               include.first.col=FALSE,
-                              taxon.metadata.delimeter="\t"){
+                              taxon.metadata.delimiter="\t"){
   # Check if the specified metadata file name is a string/character
   if( "character" %in% class(taxon.metadata.file) ){
       # Check if the metadata file exists in the specified path
     if( file.exists(taxon.metadata.file) ){
       # Check if the user has specified the metadata column containing taxon IDs
-      ####tmp.taxon.data<-as_tibble(read.table(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter,comment.char="?"))
-      tmp.taxon.data<-as_tibble(fread(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimeter))
+      ####tmp.taxon.data<-as_tibble(read.table(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimiter,comment.char="?"))
+      tmp.taxon.data<-as_tibble(fread(taxon.metadata.file,header=TRUE,sep=taxon.metadata.delimiter))
     }else{
       # Stop execution when no valid metadata file is found
       stop("The following metadata file '",taxon.metadata.file,"' was not found.")

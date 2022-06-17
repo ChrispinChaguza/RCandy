@@ -25,6 +25,7 @@ Note, R version &gt;3.6 is required to install the package.
     -   phytools,
     -   shape,
     -   stats,
+    -   data.table,
     -   stringr,
     -   tibble,
     -   tidyr,
@@ -60,7 +61,7 @@ ref.genome.gff <- system.file("extdata", "Hungary19A-6.gff", package = "RCandy",
 
 ## Running RCandy
 
-The simplest way to run RCandy to generate the phylogenetic tree and taxon metadata data. Here we have selected *Country* and *Source* columns in the metadata file. It's highly recommended that the first column in the metadata file should contain taxon names matching the names in the phylogenetic tree. We also specify additional options to ladderize and root the tree at midpoint.
+The simplest way to run RCandy to generate the phylogenetic tree and taxon metadata data. Here we have selected *Country* and *Source* columns in the metadata file. It's highly recommended that the first column in the metadata file should contain taxon names matching the names in the phylogenetic tree. We also specify additional options to ladderize and root the tree at midpoint. By default the columns in the metadata file are assumed assummed to be separated by tabs "\t", but this can be changed by passing this argument taxon.metadata.delimeter = "," when working with a file with column separated values. 
 
 ``` r
 RCandyVis(tree.file.name = tree.file, midpoint.root = TRUE, ladderize.tree.right = TRUE, 
